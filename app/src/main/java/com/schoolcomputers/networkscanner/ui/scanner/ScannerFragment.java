@@ -43,7 +43,7 @@ public class ScannerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         btnScan = view.findViewById(R.id.btnScan);
         progressIndicator = view.findViewById(R.id.progressIndicator);
         RecyclerView rvDevices = view.findViewById(R.id.rvDevices);

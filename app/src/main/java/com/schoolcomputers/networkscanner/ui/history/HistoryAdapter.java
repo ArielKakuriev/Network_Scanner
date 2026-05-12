@@ -38,7 +38,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.SessionV
     @NonNull
     @Override
     public SessionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scan_session, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scan_history, parent, false);
         return new SessionViewHolder(view);
     }
 

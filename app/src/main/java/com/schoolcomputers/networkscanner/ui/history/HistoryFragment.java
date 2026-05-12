@@ -18,6 +18,7 @@ public class HistoryFragment extends Fragment {
     private HistoryViewModel viewModel;
     private HistoryAdapter adapter;
     private RecyclerView rvHistory;
+    private View layoutEmpty;
     private TextView tvEmpty;
 
     @Nullable
@@ -25,6 +26,7 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         rvHistory = view.findViewById(R.id.rvHistory);
+        layoutEmpty = view.findViewById(R.id.layoutEmpty);
         tvEmpty = view.findViewById(R.id.tvEmpty);
         return view;
     }
@@ -40,10 +42,10 @@ public class HistoryFragment extends Fragment {
             viewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
             viewModel.getAllSessions().observe(getViewLifecycleOwner(), sessions -> {
                 if (sessions == null || sessions.isEmpty()) {
-                    tvEmpty.setVisibility(View.VISIBLE);
+                    layoutEmpty.setVisibility(View.VISIBLE);
                     rvHistory.setVisibility(View.GONE);
                 } else {
-                    tvEmpty.setVisibility(View.GONE);
+                    layoutEmpty.setVisibility(View.GONE);
                     rvHistory.setVisibility(View.VISIBLE);
                     adapter.setSessions(sessions);
                 }

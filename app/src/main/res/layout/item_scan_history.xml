@@ -17,61 +17,52 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/ivDeviceIcon"
+            android:id="@+id/ivHistoryIcon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="?attr/colorTertiaryContainer"
+            android:background="?attr/colorSecondaryContainer"
             android:padding="12dp"
-            android:src="@android:drawable/ic_menu_slideshow"
+            android:src="@android:drawable/ic_menu_recent_history"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="?attr/colorOnTertiaryContainer" />
+            app:tint="?attr/colorOnSecondaryContainer" />
 
         <TextView
-            android:id="@+id/tvDeviceIp"
+            android:id="@+id/tvNetworkName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="192.168.1.1"
+            android:text="Home Wi-Fi"
             android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/tvDeviceVendor"
-            app:layout_constraintStart_toEndOf="@id/ivDeviceIcon"
+            app:layout_constraintEnd_toStartOf="@id/tvDeviceCount"
+            app:layout_constraintStart_toEndOf="@id/ivHistoryIcon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvDeviceHostname"
+            android:id="@+id/tvScanDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="My-Android-Phone"
+            android:text="October 24, 2023 - 14:30"
             android:textAppearance="?attr/textAppearanceBodySmall"
             android:alpha="0.7"
-            app:layout_constraintEnd_toStartOf="@id/tvDeviceVendor"
-            app:layout_constraintStart_toStartOf="@id/tvDeviceIp"
-            app:layout_constraintTop_toBottomOf="@id/tvDeviceIp" />
+            app:layout_constraintEnd_toStartOf="@id/tvDeviceCount"
+            app:layout_constraintStart_toStartOf="@id/tvNetworkName"
+            app:layout_constraintTop_toBottomOf="@id/tvNetworkName" />
 
         <TextView
-            android:id="@+id/tvDeviceVendor"
+            android:id="@+id/tvDeviceCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Samsung Electronics"
-            android:textAppearance="?attr/textAppearanceLabelSmall"
-            android:textColor="?attr/colorPrimary"
+            android:background="?attr/colorPrimaryContainer"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="12 Devices"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="?attr/colorOnPrimaryContainer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvDeviceMac"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="00:11:22:33:44:55"
-            android:textAppearance="?attr/textAppearanceLabelSmall"
-            android:alpha="0.5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

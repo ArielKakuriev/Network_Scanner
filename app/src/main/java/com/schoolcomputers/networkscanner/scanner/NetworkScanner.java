@@ -6,14 +6,23 @@ import android.os.Looper;
 import com.schoolcomputers.networkscanner.data.model.Device;
 
 import java.net.InetAddress;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class NetworkScanner {
+    private static final int THREAD_POOL_SIZE = 50;
+    private static final int REACHABLE_TIMEOUT = 1000;
+    private static final int RETRY_COUNT = 1;
+
     private ExecutorService executorService;
     private final Handler mainHandler;
-    private boolean isScanning = false;
+    private volatile boolean isScanning = false;
+    private final Set<String> discoveredIps = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public interface ScanCallback {
         void onDeviceFound(Device device);
@@ -28,43 +37,86 @@ public class NetworkScanner {
     public void startScan(String subnet, ScanCallback callback) {
         if (isScanning) return;
         isScanning = true;
-        executorService = Executors.newFixedThreadPool(20);
+        discoveredIps.clear();
+        
+        executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+        AtomicInteger completedTasks = new AtomicInteger(0);
 
         new Thread(() -> {
-            for (int i = 1; i < 255; i++) {
+            for (int i = 1; i <= 254; i++) {
+                if (!isScanning) break;
+                
                 final String host = subnet + "." + i;
-                final int finalI = i;
                 executorService.execute(() -> {
                     try {
-                        InetAddress inetAddress = InetAddress.getByName(host);
-                        if (inetAddress.isReachable(1000)) {
-                            String hostname = inetAddress.getCanonicalHostName();
-                            Device device = new Device(host, "Unknown", hostname, "Unknown", 0);
-                            mainHandler.post(() -> callback.onDeviceFound(device));
+                        if (!isScanning) return;
+                        
+                        boolean reachable = scanHost(host);
+                        
+                        // Retry once if not reachable
+                        if (!reachable && isScanning) {
+                            reachable = scanHost(host);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                        if (reachable && isScanning && discoveredIps.add(host)) {
+                            try {
+                                InetAddress inetAddress = InetAddress.getByName(host);
+                                String hostname = inetAddress.getCanonicalHostName();
+                                Device device = new Device(host, "Unknown", hostname, "Unknown", 0);
+                                mainHandler.post(() -> callback.onDeviceFound(device));
+                            } catch (Exception e) {
+                                // Fallback for hostname resolution failure
+                                Device device = new Device(host, "Unknown", host, "Unknown", 0);
+                                mainHandler.post(() -> callback.onDeviceFound(device));
+                            }
+                        }
+                    } finally {
+                        int completed = completedTasks.incrementAndGet();
+                        mainHandler.post(() -> callback.onProgressUpdate((completed * 100) / 254));
+                        
+                        if (completed == 254) {
+                            finishScan(callback);
+                        }
                     }
-                    mainHandler.post(() -> callback.onProgressUpdate((finalI * 100) / 254));
                 });
             }
 
             executorService.shutdown();
             try {
-                executorService.awaitTermination(1, TimeUnit.MINUTES);
+                if (!executorService.awaitTermination(2, TimeUnit.MINUTES)) {
+                    executorService.shutdownNow();
+                }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                executorService.shutdownNow();
+                Thread.currentThread().interrupt();
             }
-
-            isScanning = false;
-            mainHandler.post(callback::onScanFinished);
+            
+            if (isScanning) {
+                finishScan(callback);
+            }
         }).start();
     }
 
+    private boolean scanHost(String host) {
+        try {
+            InetAddress inetAddress = InetAddress.getByName(host);
+            return inetAddress.isReachable(REACHABLE_TIMEOUT);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private synchronized void finishScan(ScanCallback callback) {
+        if (isScanning) {
+            isScanning = false;
+            mainHandler.post(callback::onScanFinished);
+        }
+    }
+
     public void stopScan() {
+        isScanning = false;
         if (executorService != null) {
             executorService.shutdownNow();
         }
-        isScanning = false;
     }
 }

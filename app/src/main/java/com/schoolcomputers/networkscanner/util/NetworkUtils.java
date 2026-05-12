@@ -5,22 +5,29 @@ import android.net.ConnectivityManager;
 import android.net.LinkAddress;
 import android.net.LinkProperties;
 import android.net.Network;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.util.Locale;
 
 public class NetworkUtils {
 
     public static String getLocalIpAddress(Context context) {
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        int ip = wifiInfo.getIpAddress();
-        
-        return String.format(Locale.getDefault(), "%d.%d.%d.%d",
-                (ip & 0xff), (ip >> 8 & 0xff), (ip >> 16 & 0xff), (ip >> 24 & 0xff));
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) return "0.0.0.0";
+
+        Network activeNetwork = cm.getActiveNetwork();
+        if (activeNetwork == null) return "0.0.0.0";
+
+        LinkProperties lp = cm.getLinkProperties(activeNetwork);
+        if (lp == null) return "0.0.0.0";
+
+        for (LinkAddress linkAddress : lp.getLinkAddresses()) {
+            InetAddress address = linkAddress.getAddress();
+            if (address instanceof Inet4Address && !address.isLoopbackAddress()) {
+                return address.getHostAddress();
+            }
+        }
+        return "0.0.0.0";
     }
 
     public static String getSubnet(String ipAddress) {

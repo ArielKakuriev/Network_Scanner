@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.schoolcomputers.networkscanner.data.model.Device;
+import com.schoolcomputers.networkscanner.util.NetworkUtils;
 
 import java.net.InetAddress;
 import java.util.Collections;
@@ -59,16 +60,11 @@ public class NetworkScanner {
                         }
 
                         if (reachable && isScanning && discoveredIps.add(host)) {
-                            try {
-                                InetAddress inetAddress = InetAddress.getByName(host);
-                                String hostname = inetAddress.getCanonicalHostName();
-                                Device device = new Device(host, "Unknown", hostname, "Unknown", 0);
-                                mainHandler.post(() -> callback.onDeviceFound(device));
-                            } catch (Exception e) {
-                                // Fallback for hostname resolution failure
-                                Device device = new Device(host, "Unknown", host, "Unknown", 0);
-                                mainHandler.post(() -> callback.onDeviceFound(device));
-                            }
+                            String hostname = NetworkUtils.resolveHostname(host);
+                            String mac = NetworkUtils.getMacAddressFromArp(host);
+                            
+                            Device device = new Device(host, mac, hostname, "Unknown", 0);
+                            mainHandler.post(() -> callback.onDeviceFound(device));
                         }
                     } finally {
                         int completed = completedTasks.incrementAndGet();

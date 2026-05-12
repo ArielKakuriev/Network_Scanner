@@ -1,5 +1,6 @@
 package com.schoolcomputers.networkscanner.scanner;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -22,6 +23,7 @@ public class NetworkScanner {
 
     private ExecutorService executorService;
     private final Handler mainHandler;
+    private final Context context;
     private volatile boolean isScanning = false;
     private final Set<String> discoveredIps = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
@@ -31,7 +33,8 @@ public class NetworkScanner {
         void onProgressUpdate(int progress);
     }
 
-    public NetworkScanner() {
+    public NetworkScanner(Context context) {
+        this.context = context.getApplicationContext();
         this.mainHandler = new Handler(Looper.getMainLooper());
     }
 
@@ -62,8 +65,9 @@ public class NetworkScanner {
                         if (reachable && isScanning && discoveredIps.add(host)) {
                             String hostname = NetworkUtils.resolveHostname(host);
                             String mac = NetworkUtils.getMacAddressFromArp(host);
+                            String vendor = VendorService.getInstance(context).getVendor(mac);
                             
-                            Device device = new Device(host, mac, hostname, "Unknown", 0);
+                            Device device = new Device(host, mac, hostname, vendor, 0);
                             mainHandler.post(() -> callback.onDeviceFound(device));
                         }
                     } finally {

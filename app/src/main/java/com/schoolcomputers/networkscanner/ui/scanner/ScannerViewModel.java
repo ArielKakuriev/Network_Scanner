@@ -29,7 +29,7 @@ public class ScannerViewModel extends AndroidViewModel {
     public ScannerViewModel(@NonNull Application application) {
         super(application);
         repository = new NetworkRepository(application);
-        startScanUseCase = new StartScanUseCase(repository);
+        startScanUseCase = new StartScanUseCase(application, repository);
     }
 
     public LiveData<List<Device>> getDiscoveredDevices() {

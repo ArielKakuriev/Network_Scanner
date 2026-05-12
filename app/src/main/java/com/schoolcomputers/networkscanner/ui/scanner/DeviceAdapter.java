@@ -6,21 +6,45 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schoolcomputers.networkscanner.R;
 import com.schoolcomputers.networkscanner.data.model.Device;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
-    private List<Device> devices = new ArrayList<>();
+public class DeviceAdapter extends ListAdapter<Device, DeviceAdapter.DeviceViewHolder> {
 
-    public void setDevices(List<Device> devices) {
-        this.devices = new ArrayList<>(devices);
-        notifyDataSetChanged();
+    private OnDeviceClickListener listener;
+
+    public interface OnDeviceClickListener {
+        void onDeviceClick(Device device);
     }
+
+    public void setOnDeviceClickListener(OnDeviceClickListener listener) {
+        this.listener = listener;
+    }
+
+    public DeviceAdapter() {
+        super(DIFF_CALLBACK);
+    }
+
+    private static final DiffUtil.ItemCallback<Device> DIFF_CALLBACK = new DiffUtil.ItemCallback<Device>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Device oldItem, @NonNull Device newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Device oldItem, @NonNull Device newItem) {
+            return Objects.equals(oldItem.getIpAddress(), newItem.getIpAddress()) &&
+                    Objects.equals(oldItem.getMacAddress(), newItem.getMacAddress()) &&
+                    Objects.equals(oldItem.getHostname(), newItem.getHostname()) &&
+                    Objects.equals(oldItem.getVendor(), newItem.getVendor());
+        }
+    };
 
     @NonNull
     @Override
@@ -31,25 +55,42 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
-        Device device = devices.get(position);
-        holder.tvDeviceIp.setText(device.getIpAddress());
-        holder.tvDeviceHostname.setText(device.getHostname());
-        holder.tvDeviceMac.setText(device.getMacAddress());
+        holder.bind(getItem(position));
     }
 
-    @Override
-    public int getItemCount() {
-        return devices.size();
-    }
-
-    static class DeviceViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDeviceIp, tvDeviceHostname, tvDeviceMac;
+    public class DeviceViewHolder extends RecyclerView.ViewHolder {
+        private final TextView tvIp;
+        private final TextView tvHostname;
+        private final TextView tvVendor;
+        private final TextView tvMac;
 
         public DeviceViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvDeviceIp = itemView.findViewById(R.id.tvDeviceIp);
-            tvDeviceHostname = itemView.findViewById(R.id.tvDeviceHostname);
-            tvDeviceMac = itemView.findViewById(R.id.tvDeviceMac);
+            tvIp = itemView.findViewById(R.id.tvDeviceIp);
+            tvHostname = itemView.findViewById(R.id.tvDeviceHostname);
+            tvVendor = itemView.findViewById(R.id.tvDeviceVendor);
+            tvMac = itemView.findViewById(R.id.tvDeviceMac);
+
+            itemView.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onDeviceClick(getItem(position));
+                }
+            });
         }
+
+        public void bind(Device device) {
+            tvIp.setText(device.getIpAddress());
+            tvHostname.setText(device.getHostname() != null && !device.getHostname().isEmpty() ? 
+                    device.getHostname() : "Unknown Device");
+            tvVendor.setText(device.getVendor() != null && !device.getVendor().isEmpty() ? 
+                    device.getVendor() : "Unknown Vendor");
+            tvMac.setText(device.getMacAddress());
+        }
+    }
+
+    // Helper method to maintain compatibility with existing Fragment code
+    public void setDevices(java.util.List<Device> devices) {
+        submitList(devices);
     }
 }

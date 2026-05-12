@@ -17,10 +17,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.data.model.Device;
 import com.schoolcomputers.networkscanner.util.NetworkUtils;
+import android.widget.TextView;
 
 public class ScannerFragment extends Fragment {
     private ScannerViewModel viewModel;
@@ -50,6 +54,8 @@ public class ScannerFragment extends Fragment {
         
         adapter = new DeviceAdapter();
         rvDevices.setAdapter(adapter);
+
+        adapter.setOnDeviceClickListener(this::showDeviceDetails);
         
         return view;
     }
@@ -95,5 +101,24 @@ public class ScannerFragment extends Fragment {
         }
         String subnet = NetworkUtils.getSubnet(ip);
         viewModel.startScan(subnet);
+    }
+
+    private void showDeviceDetails(Device device) {
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_device_details, null);
+        
+        ((TextView) dialogView.findViewById(R.id.detailIp)).setText(device.getIpAddress());
+        ((TextView) dialogView.findViewById(R.id.detailMac)).setText(device.getMacAddress());
+        ((TextView) dialogView.findViewById(R.id.detailHostname)).setText(
+                device.getHostname() != null && !device.getHostname().isEmpty() ? device.getHostname() : "N/A");
+        ((TextView) dialogView.findViewById(R.id.detailVendor)).setText(
+                device.getVendor() != null && !device.getVendor().isEmpty() ? device.getVendor() : "Unknown");
+
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                .setView(dialogView)
+                .create();
+
+        dialogView.findViewById(R.id.btnClose).setOnClickListener(v -> dialog.dismiss());
+        
+        dialog.show();
     }
 }

@@ -84,6 +84,21 @@
             android:text="Unknown"
             android:textAppearance="?attr/textAppearanceBodyLarge" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Open Ports"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/detailPorts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="None"
+            android:textAppearance="?attr/textAppearanceBodyLarge" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClose"
             style="@style/Widget.Material3.Button.TonalButton"

@@ -3,6 +3,8 @@ package com.schoolcomputers.networkscanner.ui.scanner;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,14 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.schoolcomputers.networkscanner.R;
 import com.schoolcomputers.networkscanner.data.model.Device;
+import com.schoolcomputers.networkscanner.scanner.PortScanner;
 import com.schoolcomputers.networkscanner.util.NetworkUtils;
 import android.widget.TextView;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ScannerFragment extends Fragment {
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private ScannerViewModel viewModel;
     private DeviceAdapter adapter;
     private MaterialButton btnScan;
@@ -104,6 +110,25 @@ public class ScannerFragment extends Fragment {
     }
 
     private void showDeviceDetails(Device device) {
+        // Show progress or just scan and then show dialog
+        new PortScanner().scanPorts(device.getIpAddress(), openPorts -> {
+            mainHandler.post(() -> {
+                if (openPorts != null && !openPorts.isEmpty()) {
+                    String portsStr = openPorts.stream()
+                            .map(String::valueOf)
+                            .collect(Collectors.joining(", "));
+                    device.setOpenPorts(portsStr);
+                } else {
+                    device.setOpenPorts("None discovered");
+                }
+                displayDetailsDialog(device);
+            });
+        });
+    }
+
+    private void displayDetailsDialog(Device device) {
+        if (!isAdded()) return;
+        
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_device_details, null);
         
         ((TextView) dialogView.findViewById(R.id.detailIp)).setText(device.getIpAddress());
@@ -112,6 +137,7 @@ public class ScannerFragment extends Fragment {
                 device.getHostname() != null && !device.getHostname().isEmpty() ? device.getHostname() : "N/A");
         ((TextView) dialogView.findViewById(R.id.detailVendor)).setText(
                 device.getVendor() != null && !device.getVendor().isEmpty() ? device.getVendor() : "Unknown");
+        ((TextView) dialogView.findViewById(R.id.detailPorts)).setText(device.getOpenPorts());
 
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(dialogView)

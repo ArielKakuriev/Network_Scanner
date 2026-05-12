@@ -14,6 +14,7 @@ public class Device {
     private String vendor;
     private long timestamp;
     private int sessionId;
+    private String openPorts;
 
     public Device(String ipAddress, String macAddress, String hostname, String vendor, int sessionId) {
         this.ipAddress = ipAddress;
@@ -39,4 +40,6 @@ public class Device {
     public void setTimestamp(long timestamp) { this.timestamp = timestamp; }
     public int getSessionId() { return sessionId; }
     public void setSessionId(int sessionId) { this.sessionId = sessionId; }
+    public String getOpenPorts() { return openPorts; }
+    public void setOpenPorts(String openPorts) { this.openPorts = openPorts; }
 }

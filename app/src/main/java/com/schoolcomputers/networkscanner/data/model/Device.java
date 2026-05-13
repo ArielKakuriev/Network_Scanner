@@ -31,6 +31,9 @@ public class Device {
     private int sessionId;
     private String openPorts;
     private long responseTime;
+    private String deviceType;
+    private boolean isGateway;
+    private boolean isLocalDevice;
 
     public Device(String ipAddress, String macAddress, String hostname, String vendor, int sessionId) {
         this.ipAddress = ipAddress;
@@ -60,4 +63,10 @@ public class Device {
     public void setOpenPorts(String openPorts) { this.openPorts = openPorts; }
     public long getResponseTime() { return responseTime; }
     public void setResponseTime(long responseTime) { this.responseTime = responseTime; }
+    public String getDeviceType() { return deviceType; }
+    public void setDeviceType(String deviceType) { this.deviceType = deviceType; }
+    public boolean isGateway() { return isGateway; }
+    public void setGateway(boolean gateway) { isGateway = gateway; }
+    public boolean isLocalDevice() { return isLocalDevice; }
+    public void setLocalDevice(boolean localDevice) { isLocalDevice = localDevice; }
 }

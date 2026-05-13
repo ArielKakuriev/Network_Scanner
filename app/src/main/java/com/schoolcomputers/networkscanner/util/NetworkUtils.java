@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.LinkAddress;
 import android.net.LinkProperties;
 import android.net.Network;
+import android.net.RouteInfo;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -30,6 +31,24 @@ public class NetworkUtils {
             }
         }
         return "0.0.0.0";
+    }
+
+    public static String getGatewayIpAddress(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) return null;
+
+        Network activeNetwork = cm.getActiveNetwork();
+        if (activeNetwork == null) return null;
+
+        LinkProperties lp = cm.getLinkProperties(activeNetwork);
+        if (lp == null) return null;
+
+        for (RouteInfo route : lp.getRoutes()) {
+            if (route.isDefaultRoute() && route.getGateway() instanceof Inet4Address) {
+                return route.getGateway().getHostAddress();
+            }
+        }
+        return null;
     }
 
     public static String getSubnet(String ipAddress) {

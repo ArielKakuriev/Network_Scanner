@@ -80,9 +80,19 @@ public class DeviceAdapter extends ListAdapter<Device, DeviceAdapter.DeviceViewH
         }
 
         public void bind(Device device) {
-            tvIp.setText(device.getIpAddress());
-            tvHostname.setText(device.getHostname() != null && !device.getHostname().isEmpty() ? 
-                    device.getHostname() : "Unknown Device");
+            String ipText = device.getIpAddress();
+            if (device.isLocalDevice()) ipText += " (This Device)";
+            else if (device.isGateway()) ipText += " (Gateway)";
+            
+            tvIp.setText(ipText);
+            
+            String hostname = device.getHostname() != null && !device.getHostname().isEmpty() ? 
+                    device.getHostname() : "Unknown Device";
+            if (device.getDeviceType() != null) {
+                hostname += " [" + device.getDeviceType() + "]";
+            }
+            tvHostname.setText(hostname);
+
             tvVendor.setText(device.getVendor() != null && !device.getVendor().isEmpty() ? 
                     device.getVendor() : "Unknown Vendor");
             tvMac.setText(device.getMacAddress());

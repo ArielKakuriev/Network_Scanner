@@ -9,6 +9,7 @@ import com.schoolcomputers.networkscanner.util.NetworkUtils;
 
 import java.net.InetAddress;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -42,6 +43,9 @@ public class NetworkScanner {
         if (isScanning) return;
         isScanning = true;
         discoveredIps.clear();
+
+        final String localIp = NetworkUtils.getLocalIpAddress(context);
+        final String gatewayIp = NetworkUtils.getGatewayIpAddress(context);
         
         executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
         AtomicInteger completedTasks = new AtomicInteger(0);
@@ -73,6 +77,12 @@ public class NetworkScanner {
                             
                             Device device = new Device(host, mac, hostname, vendor, 0);
                             device.setResponseTime(reCheck ? responseTime : REACHABLE_TIMEOUT);
+                            
+                            // Advanced detection
+                            device.setGateway(host.equals(gatewayIp));
+                            device.setLocalDevice(host.equals(localIp));
+                            device.setDeviceType(guessDeviceType(device));
+                            
                             mainHandler.post(() -> callback.onDeviceFound(device));
                         }
                     } finally {
@@ -100,6 +110,35 @@ public class NetworkScanner {
                 finishScan(callback);
             }
         }).start();
+    }
+
+    private String guessDeviceType(Device device) {
+        if (device.isGateway()) return "Router";
+        
+        String hostname = (device.getHostname() != null ? device.getHostname() : "").toLowerCase(Locale.getDefault());
+        String vendor = (device.getVendor() != null ? device.getVendor() : "").toLowerCase(Locale.getDefault());
+
+        if (hostname.contains("android") || hostname.contains("iphone") || hostname.contains("phone") || hostname.contains("mobile")) {
+            return "Phone";
+        }
+        
+        if (hostname.contains("printer") || vendor.contains("epson") || vendor.contains("hp ") || vendor.contains("canon")) {
+            return "Printer";
+        }
+
+        if (hostname.contains("pc") || hostname.contains("desktop") || hostname.contains("laptop") || hostname.contains("workstation")) {
+            return "PC";
+        }
+
+        if (vendor.contains("apple") || vendor.contains("samsung") || vendor.contains("google")) {
+            return "Mobile Device";
+        }
+
+        if (vendor.contains("tp-link") || vendor.contains("d-link") || vendor.contains("netgear") || vendor.contains("cisco")) {
+            return "Network Device";
+        }
+
+        return "Generic Device";
     }
 
     private boolean scanHost(String host) {

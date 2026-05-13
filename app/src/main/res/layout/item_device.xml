@@ -4,29 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
+    android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="6dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="?attr/colorOutlineVariant">
+    app:strokeColor="?attr/colorOutlineVariant"
+    android:clickable="true"
+    android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/ivDeviceIcon"
+        <View
+            android:id="@+id/iconBackground"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="?attr/colorTertiaryContainer"
-            android:padding="12dp"
-            android:src="@android:drawable/ic_menu_slideshow"
+            android:background="@drawable/bg_icon_circle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="?attr/colorOnTertiaryContainer" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivDeviceIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_slideshow"
+            app:layout_constraintBottom_toBottomOf="@id/iconBackground"
+            app:layout_constraintEnd_toEndOf="@id/iconBackground"
+            app:layout_constraintStart_toStartOf="@id/iconBackground"
+            app:layout_constraintTop_toTopOf="@id/iconBackground"
+            app:tint="?attr/colorPrimary" />
 
         <TextView
             android:id="@+id/tvDeviceIp"
@@ -37,7 +47,7 @@
             android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/tvDeviceVendor"
-            app:layout_constraintStart_toEndOf="@id/ivDeviceIcon"
+            app:layout_constraintStart_toEndOf="@id/iconBackground"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -46,7 +56,7 @@
             android:layout_height="wrap_content"
             android:text="My-Android-Phone"
             android:textAppearance="?attr/textAppearanceBodySmall"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintEnd_toStartOf="@id/tvDeviceVendor"
             app:layout_constraintStart_toStartOf="@id/tvDeviceIp"
             app:layout_constraintTop_toBottomOf="@id/tvDeviceIp" />
@@ -55,10 +65,9 @@
             android:id="@+id/tvDeviceVendor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Samsung Electronics"
-            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:text="Samsung"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
             android:textColor="?attr/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,7 +78,7 @@
             android:layout_marginTop="4dp"
             android:text="00:11:22:33:44:55"
             android:textAppearance="?attr/textAppearanceLabelSmall"
-            android:alpha="0.5"
+            android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

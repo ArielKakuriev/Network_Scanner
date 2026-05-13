@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.activity)
     implementation("androidx.fragment:fragment:1.8.5")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation(libs.constraintlayout)
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)

@@ -23,6 +23,8 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.schoolcomputers.networkscanner.R;
 import com.schoolcomputers.networkscanner.data.model.Device;
 import com.schoolcomputers.networkscanner.scanner.PortScanner;
@@ -30,6 +32,7 @@ import com.schoolcomputers.networkscanner.util.NetworkUtils;
 import com.schoolcomputers.networkscanner.util.NetworkStateReceiver;
 import androidx.core.content.ContextCompat;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +42,8 @@ public class ScannerFragment extends Fragment {
     private DeviceAdapter adapter;
     private MaterialButton btnScan;
     private LinearProgressIndicator progressIndicator;
+    private SwipeRefreshLayout swipeRefresh;
+    private LinearLayout emptyState;
     private TextView tvNetworkName;
     private TextView tvIpAddress;
     private NetworkStateReceiver networkStateReceiver;
@@ -50,7 +55,7 @@ public class ScannerFragment extends Fragment {
                 if (fineLocation != null && fineLocation) {
                     startScan();
                 } else {
-                    Toast.makeText(getContext(), "Location permission is required for scanning", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "Location permission is required for scanning", Snackbar.LENGTH_LONG).show();
                 }
             }
     );
@@ -61,6 +66,8 @@ public class ScannerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         btnScan = view.findViewById(R.id.btnScan);
         progressIndicator = view.findViewById(R.id.progressIndicator);
+        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        emptyState = view.findViewById(R.id.emptyState);
         tvNetworkName = view.findViewById(R.id.tvNetworkName);
         tvIpAddress = view.findViewById(R.id.tvIpAddress);
         RecyclerView rvDevices = view.findViewById(R.id.rvDevices);
@@ -102,15 +109,23 @@ public class ScannerFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ScannerViewModel.class);
 
         btnScan.setOnClickListener(v -> checkPermissionsAndScan());
+        
+        swipeRefresh.setOnRefreshListener(this::checkPermissionsAndScan);
 
         viewModel.getDiscoveredDevices().observe(getViewLifecycleOwner(), devices -> {
             adapter.setDevices(devices);
+            emptyState.setVisibility(devices.isEmpty() ? View.VISIBLE : View.GONE);
         });
 
         viewModel.getIsScanning().observe(getViewLifecycleOwner(), isScanning -> {
             btnScan.setEnabled(!isScanning && Boolean.TRUE.equals(viewModel.getIsWifiConnected().getValue()));
             btnScan.setText(isScanning ? "Scanning..." : "Start Scan");
             progressIndicator.setVisibility(isScanning ? View.VISIBLE : View.INVISIBLE);
+            swipeRefresh.setRefreshing(isScanning);
+            
+            if (!isScanning && viewModel.getDiscoveredDevices().getValue() != null && !viewModel.getDiscoveredDevices().getValue().isEmpty()) {
+                Snackbar.make(view, "Scan complete: " + viewModel.getDiscoveredDevices().getValue().size() + " devices found", Snackbar.LENGTH_SHORT).show();
+            }
         });
 
         viewModel.getProgress().observe(getViewLifecycleOwner(), progress -> {
@@ -120,6 +135,11 @@ public class ScannerFragment extends Fragment {
         viewModel.getIsWifiConnected().observe(getViewLifecycleOwner(), isConnected -> {
             if (!Boolean.TRUE.equals(viewModel.getIsScanning().getValue())) {
                 btnScan.setEnabled(isConnected);
+            }
+            if (!isConnected) {
+                Snackbar.make(view, "No Wi-Fi connection", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Dismiss", v -> {})
+                        .show();
             }
         });
 
@@ -143,7 +163,8 @@ public class ScannerFragment extends Fragment {
     private void startScan() {
         String ip = NetworkUtils.getLocalIpAddress(requireContext());
         if (ip.equals("0.0.0.0")) {
-            Toast.makeText(getContext(), "Please connect to Wi-Fi", Toast.LENGTH_SHORT).show();
+            Snackbar.make(requireView(), "Please connect to Wi-Fi", Snackbar.LENGTH_SHORT).show();
+            swipeRefresh.setRefreshing(false);
             return;
         }
         String subnet = NetworkUtils.getSubnet(ip);

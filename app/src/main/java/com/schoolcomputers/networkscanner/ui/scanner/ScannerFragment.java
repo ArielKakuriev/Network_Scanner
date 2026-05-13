@@ -27,6 +27,8 @@ import com.schoolcomputers.networkscanner.R;
 import com.schoolcomputers.networkscanner.data.model.Device;
 import com.schoolcomputers.networkscanner.scanner.PortScanner;
 import com.schoolcomputers.networkscanner.util.NetworkUtils;
+import com.schoolcomputers.networkscanner.util.NetworkStateReceiver;
+import androidx.core.content.ContextCompat;
 import android.widget.TextView;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +39,9 @@ public class ScannerFragment extends Fragment {
     private DeviceAdapter adapter;
     private MaterialButton btnScan;
     private LinearProgressIndicator progressIndicator;
+    private TextView tvNetworkName;
+    private TextView tvIpAddress;
+    private NetworkStateReceiver networkStateReceiver;
 
     private final ActivityResultLauncher<String[]> permissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(),
@@ -56,6 +61,8 @@ public class ScannerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         btnScan = view.findViewById(R.id.btnScan);
         progressIndicator = view.findViewById(R.id.progressIndicator);
+        tvNetworkName = view.findViewById(R.id.tvNetworkName);
+        tvIpAddress = view.findViewById(R.id.tvIpAddress);
         RecyclerView rvDevices = view.findViewById(R.id.rvDevices);
         
         adapter = new DeviceAdapter();
@@ -63,7 +70,30 @@ public class ScannerFragment extends Fragment {
 
         adapter.setOnDeviceClickListener(this::showDeviceDetails);
         
+        setupNetworkReceiver();
+
         return view;
+    }
+
+    private void setupNetworkReceiver() {
+        networkStateReceiver = new NetworkStateReceiver((isConnected, isWifi, name) -> {
+            if (viewModel != null) {
+                viewModel.updateNetworkState(isConnected, isWifi, name);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ContextCompat.registerReceiver(requireContext(), networkStateReceiver, 
+                NetworkStateReceiver.getIntentFilter(), ContextCompat.RECEIVER_NOT_EXPORTED);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        requireContext().unregisterReceiver(networkStateReceiver);
     }
 
     @Override
@@ -78,13 +108,24 @@ public class ScannerFragment extends Fragment {
         });
 
         viewModel.getIsScanning().observe(getViewLifecycleOwner(), isScanning -> {
-            btnScan.setEnabled(!isScanning);
+            btnScan.setEnabled(!isScanning && Boolean.TRUE.equals(viewModel.getIsWifiConnected().getValue()));
             btnScan.setText(isScanning ? "Scanning..." : "Start Scan");
             progressIndicator.setVisibility(isScanning ? View.VISIBLE : View.INVISIBLE);
         });
 
         viewModel.getProgress().observe(getViewLifecycleOwner(), progress -> {
             progressIndicator.setProgress(progress);
+        });
+
+        viewModel.getIsWifiConnected().observe(getViewLifecycleOwner(), isConnected -> {
+            if (!Boolean.TRUE.equals(viewModel.getIsScanning().getValue())) {
+                btnScan.setEnabled(isConnected);
+            }
+        });
+
+        viewModel.getNetworkName().observe(getViewLifecycleOwner(), name -> {
+            tvNetworkName.setText(name);
+            tvIpAddress.setText("IP: " + NetworkUtils.getLocalIpAddress(requireContext()));
         });
     }
 

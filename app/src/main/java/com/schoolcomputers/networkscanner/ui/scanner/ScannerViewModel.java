@@ -23,6 +23,8 @@ public class ScannerViewModel extends AndroidViewModel {
     private final MutableLiveData<List<Device>> discoveredDevices = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Boolean> isScanning = new MutableLiveData<>(false);
     private final MutableLiveData<Integer> progress = new MutableLiveData<>(0);
+    private final MutableLiveData<Boolean> isWifiConnected = new MutableLiveData<>(false);
+    private final MutableLiveData<String> networkName = new MutableLiveData<>("Not Connected");
     private long currentSessionId = -1;
     private ScanSession currentSession;
 
@@ -42,6 +44,19 @@ public class ScannerViewModel extends AndroidViewModel {
 
     public LiveData<Integer> getProgress() {
         return progress;
+    }
+
+    public LiveData<Boolean> getIsWifiConnected() {
+        return isWifiConnected;
+    }
+
+    public LiveData<String> getNetworkName() {
+        return networkName;
+    }
+
+    public void updateNetworkState(boolean isConnected, boolean isWifi, String name) {
+        isWifiConnected.setValue(isConnected && isWifi);
+        networkName.setValue(isConnected && isWifi ? name : "Disconnected");
     }
 
     public void startScan(String subnet) {

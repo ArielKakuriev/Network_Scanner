@@ -14,14 +14,32 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.schoolcomputers.networkscanner.ui.history.HistoryFragment;
 import com.schoolcomputers.networkscanner.ui.scanner.ScannerFragment;
 import com.schoolcomputers.networkscanner.ui.settings.SettingsFragment;
+import com.schoolcomputers.networkscanner.util.PermissionManager;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private PermissionManager permissionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        permissionManager = new PermissionManager(this);
+        permissionManager.checkAndRequestPermissions(new PermissionManager.PermissionCallback() {
+            @Override
+            public void onPermissionsGranted() {
+                // Permissions granted, you can proceed with network scanning
+            }
+
+            @Override
+            public void onPermissionsDenied(List<String> deniedPermissions) {
+                // Handle denied permissions (e.g., show a message or disable features)
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

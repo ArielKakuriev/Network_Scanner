@@ -21,6 +21,15 @@ public interface ScanSessionDao {
     @Query("SELECT * FROM scan_sessions ORDER BY startTime DESC")
     LiveData<List<ScanSession>> getAllSessions();
 
+    @Query("SELECT * FROM scan_sessions ORDER BY startTime DESC LIMIT :limit")
+    LiveData<List<ScanSession>> getLatestSessions(int limit);
+
     @Query("SELECT * FROM scan_sessions WHERE id = :id")
     ScanSession getSessionById(int id);
+
+    @Query("DELETE FROM scan_sessions WHERE startTime < :timestamp")
+    void deleteOlderThan(long timestamp);
+
+    @Query("DELETE FROM scan_sessions")
+    void deleteAll();
 }

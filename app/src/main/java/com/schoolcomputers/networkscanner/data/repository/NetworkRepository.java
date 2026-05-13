@@ -51,7 +51,27 @@ public class NetworkRepository {
         return scanSessionDao.getAllSessions();
     }
 
+    public LiveData<List<ScanSession>> getLatestSessions(int limit) {
+        return scanSessionDao.getLatestSessions(limit);
+    }
+
     public LiveData<List<Device>> getDevicesForSession(int sessionId) {
         return deviceDao.getDevicesForSession(sessionId);
+    }
+
+    public LiveData<List<Device>> searchDevices(String query) {
+        return deviceDao.searchDevices("%" + query + "%");
+    }
+
+    public LiveData<Integer> getUniqueDeviceCount() {
+        return deviceDao.getUniqueDeviceCount();
+    }
+
+    public void deleteOldHistory(long beforeTimestamp) {
+        executorService.execute(() -> scanSessionDao.deleteOlderThan(beforeTimestamp));
+    }
+
+    public void deleteAllHistory() {
+        executorService.execute(scanSessionDao::deleteAll);
     }
 }

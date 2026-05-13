@@ -19,4 +19,13 @@ public interface DeviceDao {
 
     @Query("SELECT * FROM devices ORDER BY timestamp DESC")
     LiveData<List<Device>> getAllDevices();
+
+    @Query("SELECT * FROM devices WHERE ipAddress LIKE :query OR hostname LIKE :query")
+    LiveData<List<Device>> searchDevices(String query);
+
+    @Query("SELECT COUNT(DISTINCT macAddress) FROM devices")
+    LiveData<Integer> getUniqueDeviceCount();
+
+    @Query("SELECT COUNT(*) FROM devices WHERE sessionId = :sessionId")
+    int getCountForSession(int sessionId);
 }

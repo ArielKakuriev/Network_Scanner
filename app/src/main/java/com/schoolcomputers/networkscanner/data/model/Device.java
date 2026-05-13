@@ -1,9 +1,24 @@
 package com.schoolcomputers.networkscanner.data.model;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "devices")
+@Entity(
+    tableName = "devices",
+    foreignKeys = @ForeignKey(
+        entity = ScanSession.class,
+        parentColumns = "id",
+        childColumns = "sessionId",
+        onDelete = ForeignKey.CASCADE
+    ),
+    indices = {
+        @Index("sessionId"),
+        @Index("ipAddress"),
+        @Index("hostname")
+    }
+)
 public class Device {
     @PrimaryKey(autoGenerate = true)
     private int id;

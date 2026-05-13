@@ -12,6 +12,7 @@ import com.schoolcomputers.networkscanner.data.model.ScanSession;
 import com.schoolcomputers.networkscanner.data.repository.NetworkRepository;
 import com.schoolcomputers.networkscanner.domain.usecase.StartScanUseCase;
 import com.schoolcomputers.networkscanner.scanner.NetworkScanner;
+import com.schoolcomputers.networkscanner.util.NotificationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,12 +87,15 @@ public class ScannerViewModel extends AndroidViewModel {
                     isScanning.postValue(false);
                     progress.postValue(100);
                     
+                    int count = 0;
                     if (currentSession != null) {
                         List<Device> found = discoveredDevices.getValue();
+                        count = found != null ? found.size() : 0;
                         currentSession.setId((int) currentSessionId);
-                        currentSession.setDeviceCount(found != null ? found.size() : 0);
+                        currentSession.setDeviceCount(count);
                         repository.updateSession(currentSession);
                     }
+                    NotificationHelper.showScanCompleteNotification(getApplication(), count);
                 }
 
                 @Override

@@ -33,6 +33,9 @@ import com.schoolcomputers.networkscanner.util.NetworkStateReceiver;
 import androidx.core.content.ContextCompat;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -193,13 +196,20 @@ public class ScannerFragment extends Fragment {
         
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_device_details, null);
         
-        ((TextView) dialogView.findViewById(R.id.detailIp)).setText(device.getIpAddress());
-        ((TextView) dialogView.findViewById(R.id.detailMac)).setText(device.getMacAddress());
-        ((TextView) dialogView.findViewById(R.id.detailHostname)).setText(
+        setupDetailItem(dialogView.findViewById(R.id.itemHostname), "Hostname", 
                 device.getHostname() != null && !device.getHostname().isEmpty() ? device.getHostname() : "N/A");
-        ((TextView) dialogView.findViewById(R.id.detailVendor)).setText(
+        setupDetailItem(dialogView.findViewById(R.id.itemIp), "IP Address", device.getIpAddress());
+        setupDetailItem(dialogView.findViewById(R.id.itemMac), "MAC Address", device.getMacAddress());
+        setupDetailItem(dialogView.findViewById(R.id.itemVendor), "Vendor", 
                 device.getVendor() != null && !device.getVendor().isEmpty() ? device.getVendor() : "Unknown");
-        ((TextView) dialogView.findViewById(R.id.detailPorts)).setText(device.getOpenPorts());
+        setupDetailItem(dialogView.findViewById(R.id.itemResponseTime), "Response Time", 
+                device.getResponseTime() > 0 ? device.getResponseTime() + " ms" : "N/A");
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss", Locale.getDefault());
+        setupDetailItem(dialogView.findViewById(R.id.itemLastSeen), "Last Seen", sdf.format(new Date(device.getTimestamp())));
+        
+        setupDetailItem(dialogView.findViewById(R.id.itemPorts), "Open Ports", 
+                device.getOpenPorts() != null ? device.getOpenPorts() : "None discovered");
 
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(dialogView)
@@ -208,5 +218,10 @@ public class ScannerFragment extends Fragment {
         dialogView.findViewById(R.id.btnClose).setOnClickListener(v -> dialog.dismiss());
         
         dialog.show();
+    }
+
+    private void setupDetailItem(View view, String label, String value) {
+        ((TextView) view.findViewById(R.id.label)).setText(label);
+        ((TextView) view.findViewById(R.id.value)).setText(value);
     }
 }

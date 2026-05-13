@@ -63,11 +63,16 @@ public class NetworkScanner {
                         }
 
                         if (reachable && isScanning && discoveredIps.add(host)) {
+                            long start = System.currentTimeMillis();
+                            boolean reCheck = scanHost(host);
+                            long responseTime = System.currentTimeMillis() - start;
+                            
                             String hostname = NetworkUtils.resolveHostname(host);
                             String mac = NetworkUtils.getMacAddressFromArp(host);
                             String vendor = VendorService.getInstance(context).getVendor(mac);
                             
                             Device device = new Device(host, mac, hostname, vendor, 0);
+                            device.setResponseTime(reCheck ? responseTime : REACHABLE_TIMEOUT);
                             mainHandler.post(() -> callback.onDeviceFound(device));
                         }
                     } finally {

@@ -30,6 +30,7 @@ public class Device {
     private long timestamp;
     private int sessionId;
     private String openPorts;
+    private long responseTime;
 
     public Device(String ipAddress, String macAddress, String hostname, String vendor, int sessionId) {
         this.ipAddress = ipAddress;
@@ -57,4 +58,6 @@ public class Device {
     public void setSessionId(int sessionId) { this.sessionId = sessionId; }
     public String getOpenPorts() { return openPorts; }
     public void setOpenPorts(String openPorts) { this.openPorts = openPorts; }
+    public long getResponseTime() { return responseTime; }
+    public void setResponseTime(long responseTime) { this.responseTime = responseTime; }
 }

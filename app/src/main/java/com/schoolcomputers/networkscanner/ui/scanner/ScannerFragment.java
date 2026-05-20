@@ -192,11 +192,6 @@ public class ScannerFragment extends Fragment {
         if (!isAdded()) return;
 
         final EditText input = new EditText(requireContext());
-        String currentName = viewModel.getNetworkName().getValue();
-        if (currentName != null && !currentName.equals("Disconnected") && !currentName.equals("Not Connected")) {
-            input.setText(currentName);
-        }
-        
         input.setHint("Enter network name");
         input.setSingleLine(true);
         

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,14 @@ public class PermissionManager {
     public PermissionManager(@NonNull AppCompatActivity activity) {
         this.activity = activity;
         this.requestPermissionLauncher = activity.registerForActivityResult(
+                new ActivityResultContracts.RequestMultiplePermissions(),
+                this::handlePermissionResult
+        );
+    }
+
+    public PermissionManager(@NonNull Fragment fragment) {
+        this.activity = (AppCompatActivity) fragment.requireActivity();
+        this.requestPermissionLauncher = fragment.registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 this::handlePermissionResult
         );

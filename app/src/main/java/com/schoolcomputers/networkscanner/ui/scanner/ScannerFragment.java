@@ -32,7 +32,6 @@ import com.schoolcomputers.networkscanner.scanner.PortScanner;
 import com.schoolcomputers.networkscanner.util.NetworkUtils;
 import com.schoolcomputers.networkscanner.util.NetworkStateReceiver;
 import com.schoolcomputers.networkscanner.util.PermissionManager;
-import androidx.core.content.ContextCompat;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import java.text.SimpleDateFormat;
@@ -54,6 +53,12 @@ public class ScannerFragment extends Fragment {
     private NetworkStateReceiver networkStateReceiver;
     private PermissionManager permissionManager;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        permissionManager = new PermissionManager(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,8 +78,6 @@ public class ScannerFragment extends Fragment {
         
         setupNetworkReceiver();
         
-        permissionManager = new PermissionManager((AppCompatActivity) requireActivity());
-
         return view;
     }
 
@@ -89,14 +92,18 @@ public class ScannerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ContextCompat.registerReceiver(requireContext(), networkStateReceiver, 
-                NetworkStateReceiver.getIntentFilter(), ContextCompat.RECEIVER_NOT_EXPORTED);
+        if (getContext() != null) {
+            ContextCompat.registerReceiver(getContext(), networkStateReceiver, 
+                    NetworkStateReceiver.getIntentFilter(), ContextCompat.RECEIVER_NOT_EXPORTED);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        requireContext().unregisterReceiver(networkStateReceiver);
+        if (getContext() != null) {
+            getContext().unregisterReceiver(networkStateReceiver);
+        }
     }
 
     @Override

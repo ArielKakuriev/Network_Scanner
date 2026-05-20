@@ -34,7 +34,11 @@ public class DeviceAdapter extends ListAdapter<Device, DeviceAdapter.DeviceViewH
     private static final DiffUtil.ItemCallback<Device> DIFF_CALLBACK = new DiffUtil.ItemCallback<Device>() {
         @Override
         public boolean areItemsTheSame(@NonNull Device oldItem, @NonNull Device newItem) {
-            return oldItem.getId() == newItem.getId();
+            // Use IP Address as a fallback identity if ID is not set (e.g., before saving to DB)
+            if (oldItem.getId() != 0 && newItem.getId() != 0) {
+                return oldItem.getId() == newItem.getId();
+            }
+            return Objects.equals(oldItem.getIpAddress(), newItem.getIpAddress());
         }
 
         @Override
@@ -42,7 +46,9 @@ public class DeviceAdapter extends ListAdapter<Device, DeviceAdapter.DeviceViewH
             return Objects.equals(oldItem.getIpAddress(), newItem.getIpAddress()) &&
                     Objects.equals(oldItem.getMacAddress(), newItem.getMacAddress()) &&
                     Objects.equals(oldItem.getHostname(), newItem.getHostname()) &&
-                    Objects.equals(oldItem.getVendor(), newItem.getVendor());
+                    Objects.equals(oldItem.getVendor(), newItem.getVendor()) &&
+                    oldItem.isGateway() == newItem.isGateway() &&
+                    oldItem.isLocalDevice() == newItem.isLocalDevice();
         }
     };
 

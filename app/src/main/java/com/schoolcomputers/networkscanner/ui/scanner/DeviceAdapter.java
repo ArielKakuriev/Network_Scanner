@@ -67,15 +67,11 @@ public class DeviceAdapter extends ListAdapter<Device, DeviceAdapter.DeviceViewH
     public class DeviceViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvIp;
         private final TextView tvHostname;
-        private final TextView tvVendor;
-        private final TextView tvMac;
 
         public DeviceViewHolder(@NonNull View itemView) {
             super(itemView);
             tvIp = itemView.findViewById(R.id.tvDeviceIp);
             tvHostname = itemView.findViewById(R.id.tvDeviceHostname);
-            tvVendor = itemView.findViewById(R.id.tvDeviceVendor);
-            tvMac = itemView.findViewById(R.id.tvDeviceMac);
 
             itemView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
@@ -98,10 +94,6 @@ public class DeviceAdapter extends ListAdapter<Device, DeviceAdapter.DeviceViewH
                 hostname += " [" + device.getDeviceType() + "]";
             }
             tvHostname.setText(hostname);
-
-            tvVendor.setText(device.getVendor() != null && !device.getVendor().isEmpty() ? 
-                    device.getVendor() : "Unknown Vendor");
-            tvMac.setText(device.getMacAddress());
         }
     }
 

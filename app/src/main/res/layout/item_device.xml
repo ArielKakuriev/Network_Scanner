@@ -46,7 +46,7 @@
             android:text="192.168.1.1"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/tvDeviceVendor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iconBackground"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,30 +57,9 @@
             android:text="My-Android-Phone"
             android:textAppearance="?attr/textAppearanceBodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toStartOf="@id/tvDeviceVendor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvDeviceIp"
             app:layout_constraintTop_toBottomOf="@id/tvDeviceIp" />
-
-        <TextView
-            android:id="@+id/tvDeviceVendor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Samsung"
-            android:textAppearance="?attr/textAppearanceLabelMedium"
-            android:textColor="?attr/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvDeviceMac"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="00:11:22:33:44:55"
-            android:textAppearance="?attr/textAppearanceLabelSmall"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

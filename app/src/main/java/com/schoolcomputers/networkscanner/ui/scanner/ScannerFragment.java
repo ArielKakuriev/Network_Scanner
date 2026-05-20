@@ -28,12 +28,13 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.schoolcomputers.networkscanner.R;
 import com.schoolcomputers.networkscanner.data.model.Device;
-import com.schoolcomputers.networkscanner.scanner.PortScanner;
 import com.schoolcomputers.networkscanner.util.NetworkUtils;
 import com.schoolcomputers.networkscanner.util.NetworkStateReceiver;
 import com.schoolcomputers.networkscanner.util.PermissionManager;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -41,7 +42,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ScannerFragment extends Fragment {
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private ScannerViewModel viewModel;
     private DeviceAdapter adapter;
     private MaterialButton btnScan;
@@ -128,6 +128,7 @@ public class ScannerFragment extends Fragment {
             
             if (!isScanning && viewModel.getDiscoveredDevices().getValue() != null && !viewModel.getDiscoveredDevices().getValue().isEmpty()) {
                 Snackbar.make(view, "Scan complete: " + viewModel.getDiscoveredDevices().getValue().size() + " devices found", Snackbar.LENGTH_SHORT).show();
+                showRenameDialog();
             }
         });
 
@@ -187,21 +188,41 @@ public class ScannerFragment extends Fragment {
         viewModel.startScan(subnet);
     }
 
+    private void showRenameDialog() {
+        if (!isAdded()) return;
+
+        final EditText input = new EditText(requireContext());
+        String currentName = viewModel.getNetworkName().getValue();
+        if (currentName != null && !currentName.equals("Disconnected") && !currentName.equals("Not Connected")) {
+            input.setText(currentName);
+        }
+        
+        input.setHint("Enter network name");
+        input.setSingleLine(true);
+        
+        FrameLayout container = new FrameLayout(requireContext());
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+        params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+        input.setLayoutParams(params);
+        container.addView(input);
+
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Save Scan")
+                .setMessage("What would you like to name this network?")
+                .setView(container)
+                .setPositiveButton("Save", (dialog, which) -> {
+                    String name = input.getText().toString().trim();
+                    if (!name.isEmpty()) {
+                        viewModel.renameCurrentSession(name);
+                    }
+                })
+                .setNegativeButton("Keep Default", null)
+                .show();
+    }
+
     private void showDeviceDetails(Device device) {
-        // Show progress or just scan and then show dialog
-        new PortScanner().scanPorts(device.getIpAddress(), openPorts -> {
-            mainHandler.post(() -> {
-                if (openPorts != null && !openPorts.isEmpty()) {
-                    String portsStr = openPorts.stream()
-                            .map(String::valueOf)
-                            .collect(Collectors.joining(", "));
-                    device.setOpenPorts(portsStr);
-                } else {
-                    device.setOpenPorts("None discovered");
-                }
-                displayDetailsDialog(device);
-            });
-        });
+        displayDetailsDialog(device);
     }
 
     private void displayDetailsDialog(Device device) {
@@ -213,16 +234,6 @@ public class ScannerFragment extends Fragment {
                 device.getHostname() != null && !device.getHostname().isEmpty() ? device.getHostname() : "N/A");
         setupDetailItem(dialogView.findViewById(R.id.itemIp), "IP Address", device.getIpAddress());
         setupDetailItem(dialogView.findViewById(R.id.itemMac), "MAC Address", device.getMacAddress());
-        setupDetailItem(dialogView.findViewById(R.id.itemVendor), "Vendor", 
-                device.getVendor() != null && !device.getVendor().isEmpty() ? device.getVendor() : "Unknown");
-        setupDetailItem(dialogView.findViewById(R.id.itemResponseTime), "Response Time", 
-                device.getResponseTime() > 0 ? device.getResponseTime() + " ms" : "N/A");
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss", Locale.getDefault());
-        setupDetailItem(dialogView.findViewById(R.id.itemLastSeen), "Last Seen", sdf.format(new Date(device.getTimestamp())));
-        
-        setupDetailItem(dialogView.findViewById(R.id.itemPorts), "Open Ports", 
-                device.getOpenPorts() != null ? device.getOpenPorts() : "None discovered");
 
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(dialogView)

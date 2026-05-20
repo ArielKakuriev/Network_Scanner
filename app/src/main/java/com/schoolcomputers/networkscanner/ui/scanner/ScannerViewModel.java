@@ -70,7 +70,8 @@ public class ScannerViewModel extends AndroidViewModel {
         isScanning.setValue(true);
         progress.setValue(0);
 
-        currentSession = new ScanSession(System.currentTimeMillis(), "Network " + subnet);
+        String defaultName = "Network " + subnet;
+        currentSession = new ScanSession(System.currentTimeMillis(), defaultName);
         repository.insertSession(currentSession, sessionId -> {
             currentSessionId = sessionId;
             int timeout = settingsManager.getScanTimeout();
@@ -111,6 +112,13 @@ public class ScannerViewModel extends AndroidViewModel {
                 }
             });
         });
+    }
+
+    public void renameCurrentSession(String newName) {
+        if (currentSession != null && currentSessionId != -1) {
+            currentSession.setNetworkName(newName);
+            repository.updateSession(currentSession);
+        }
     }
 
     public void stopScan() {

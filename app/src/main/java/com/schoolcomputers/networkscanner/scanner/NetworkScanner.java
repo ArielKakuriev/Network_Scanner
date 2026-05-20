@@ -76,10 +76,8 @@ public class NetworkScanner {
                             long responseTime = System.currentTimeMillis() - start;
                             
                             String hostname = NetworkUtils.resolveHostname(host);
-                            String mac = NetworkUtils.getMacAddressFromArp(host);
-                            String vendor = VendorService.getInstance(context).getVendor(mac);
                             
-                            Device device = new Device(host, mac, hostname, vendor, 0);
+                            Device device = new Device(host, hostname, 0);
                             device.setResponseTime(reCheck ? responseTime : reachableTimeout);
                             
                             // Advanced detection
@@ -120,26 +118,17 @@ public class NetworkScanner {
         if (device.isGateway()) return "Router";
         
         String hostname = (device.getHostname() != null ? device.getHostname() : "").toLowerCase(Locale.getDefault());
-        String vendor = (device.getVendor() != null ? device.getVendor() : "").toLowerCase(Locale.getDefault());
 
         if (hostname.contains("android") || hostname.contains("iphone") || hostname.contains("phone") || hostname.contains("mobile")) {
             return "Phone";
         }
         
-        if (hostname.contains("printer") || vendor.contains("epson") || vendor.contains("hp ") || vendor.contains("canon")) {
+        if (hostname.contains("printer")) {
             return "Printer";
         }
 
         if (hostname.contains("pc") || hostname.contains("desktop") || hostname.contains("laptop") || hostname.contains("workstation")) {
             return "PC";
-        }
-
-        if (vendor.contains("apple") || vendor.contains("samsung") || vendor.contains("google")) {
-            return "Mobile Device";
-        }
-
-        if (vendor.contains("tp-link") || vendor.contains("d-link") || vendor.contains("netgear") || vendor.contains("cisco")) {
-            return "Network Device";
         }
 
         return "Generic Device";

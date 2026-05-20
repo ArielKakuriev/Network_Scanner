@@ -8,8 +8,6 @@ import android.net.Network;
 import android.net.RouteInfo;
 import android.location.LocationManager;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 
@@ -70,31 +68,6 @@ public class NetworkUtils {
         return ipAddress.substring(0, ipAddress.lastIndexOf("."));
     }
 
-    /**
-     * Retrieves the MAC address for a given IP address by parsing the ARP cache.
-     * Note: Access to /proc/net/arp is restricted on Android 10 (API 29) and above.
-     */
-    public static String getMacAddressFromArp(String ip) {
-        if (ip == null) return "00:00:00:00:00:00";
-        try (BufferedReader br = new BufferedReader(new FileReader("/proc/net/arp"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.contains(ip)) {
-                    String[] parts = line.split("\\s+");
-                    if (parts.length >= 4) {
-                        String mac = parts[3];
-                        if (mac.matches("..:..:..:..:..:..") && !mac.equals("00:00:00:00:00:00")) {
-                            return mac.toUpperCase();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "00:00:00:00:00:00";
-    }
-
     public static String resolveHostname(String ip) {
         try {
             InetAddress addr = InetAddress.getByName(ip);
@@ -103,7 +76,7 @@ public class NetworkUtils {
                 return hostname;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // Hostname resolution failed
         }
         return "Unknown Device";
     }

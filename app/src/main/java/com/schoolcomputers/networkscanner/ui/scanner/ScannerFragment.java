@@ -228,7 +228,6 @@ public class ScannerFragment extends Fragment {
         setupDetailItem(dialogView.findViewById(R.id.itemHostname), "Hostname", 
                 device.getHostname() != null && !device.getHostname().isEmpty() ? device.getHostname() : "N/A");
         setupDetailItem(dialogView.findViewById(R.id.itemIp), "IP Address", device.getIpAddress());
-        setupDetailItem(dialogView.findViewById(R.id.itemMac), "MAC Address", device.getMacAddress());
 
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(dialogView)

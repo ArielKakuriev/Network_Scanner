@@ -44,9 +44,7 @@ public class DeviceAdapter extends ListAdapter<Device, DeviceAdapter.DeviceViewH
         @Override
         public boolean areContentsTheSame(@NonNull Device oldItem, @NonNull Device newItem) {
             return Objects.equals(oldItem.getIpAddress(), newItem.getIpAddress()) &&
-                    Objects.equals(oldItem.getMacAddress(), newItem.getMacAddress()) &&
                     Objects.equals(oldItem.getHostname(), newItem.getHostname()) &&
-                    Objects.equals(oldItem.getVendor(), newItem.getVendor()) &&
                     oldItem.isGateway() == newItem.isGateway() &&
                     oldItem.isLocalDevice() == newItem.isLocalDevice();
         }

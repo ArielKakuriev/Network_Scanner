@@ -27,7 +27,6 @@
 
         <include layout="@layout/layout_detail_item" android:id="@+id/itemHostname" />
         <include layout="@layout/layout_detail_item" android:id="@+id/itemIp" />
-        <include layout="@layout/layout_detail_item" android:id="@+id/itemMac" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClose"

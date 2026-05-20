@@ -6,6 +6,7 @@ import android.net.LinkAddress;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.net.RouteInfo;
+import android.location.LocationManager;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -49,6 +50,19 @@ public class NetworkUtils {
             }
         }
         return null;
+    }
+
+    public static boolean isLocationEnabled(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsEnabled = false;
+        boolean networkEnabled = false;
+        try {
+            gpsEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ignored) {}
+        try {
+            networkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ignored) {}
+        return gpsEnabled || networkEnabled;
     }
 
     public static String getSubnet(String ipAddress) {

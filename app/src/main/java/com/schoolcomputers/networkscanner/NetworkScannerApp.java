@@ -5,14 +5,18 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 import com.schoolcomputers.networkscanner.data.repository.NetworkRepository;
+import com.schoolcomputers.networkscanner.util.SettingsManager;
 
 public class NetworkScannerApp extends Application {
     public static final String CHANNEL_ID = "scan_results_channel";
     private NetworkRepository repository;
+    private SettingsManager settingsManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        settingsManager = new SettingsManager(this);
+        settingsManager.initTheme();
         repository = new NetworkRepository(this);
         createNotificationChannel();
     }
@@ -35,5 +39,9 @@ public class NetworkScannerApp extends Application {
 
     public NetworkRepository getRepository() {
         return repository;
+    }
+
+    public SettingsManager getSettingsManager() {
+        return settingsManager;
     }
 }

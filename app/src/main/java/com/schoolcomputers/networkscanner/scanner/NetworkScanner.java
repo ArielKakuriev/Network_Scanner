@@ -19,9 +19,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class NetworkScanner {
     private static final int THREAD_POOL_SIZE = 50;
-    private static final int REACHABLE_TIMEOUT = 1000;
-    private static final int RETRY_COUNT = 1;
-
+    private static final int DEFAULT_TIMEOUT = 1000;
+    
+    private int reachableTimeout = DEFAULT_TIMEOUT;
     private ExecutorService executorService;
     private final Handler mainHandler;
     private final Context context;
@@ -37,6 +37,10 @@ public class NetworkScanner {
     public NetworkScanner(Context context) {
         this.context = context.getApplicationContext();
         this.mainHandler = new Handler(Looper.getMainLooper());
+    }
+
+    public void setReachableTimeout(int timeout) {
+        this.reachableTimeout = timeout;
     }
 
     public void startScan(String subnet, ScanCallback callback) {
@@ -76,7 +80,7 @@ public class NetworkScanner {
                             String vendor = VendorService.getInstance(context).getVendor(mac);
                             
                             Device device = new Device(host, mac, hostname, vendor, 0);
-                            device.setResponseTime(reCheck ? responseTime : REACHABLE_TIMEOUT);
+                            device.setResponseTime(reCheck ? responseTime : reachableTimeout);
                             
                             // Advanced detection
                             device.setGateway(host.equals(gatewayIp));
@@ -144,7 +148,7 @@ public class NetworkScanner {
     private boolean scanHost(String host) {
         try {
             InetAddress inetAddress = InetAddress.getByName(host);
-            return inetAddress.isReachable(REACHABLE_TIMEOUT);
+            return inetAddress.isReachable(reachableTimeout);
         } catch (Exception e) {
             return false;
         }

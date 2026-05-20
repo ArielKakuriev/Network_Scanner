@@ -13,6 +13,8 @@ import com.schoolcomputers.networkscanner.data.repository.NetworkRepository;
 import com.schoolcomputers.networkscanner.domain.usecase.StartScanUseCase;
 import com.schoolcomputers.networkscanner.scanner.NetworkScanner;
 import com.schoolcomputers.networkscanner.util.NotificationHelper;
+import com.schoolcomputers.networkscanner.util.SettingsManager;
+import com.schoolcomputers.networkscanner.NetworkScannerApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ScannerViewModel extends AndroidViewModel {
     private final NetworkRepository repository;
     private final StartScanUseCase startScanUseCase;
+    private final SettingsManager settingsManager;
     
     private final MutableLiveData<List<Device>> discoveredDevices = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Boolean> isScanning = new MutableLiveData<>(false);
@@ -31,7 +34,9 @@ public class ScannerViewModel extends AndroidViewModel {
 
     public ScannerViewModel(@NonNull Application application) {
         super(application);
-        repository = new NetworkRepository(application);
+        NetworkScannerApp app = (NetworkScannerApp) application;
+        repository = app.getRepository();
+        settingsManager = app.getSettingsManager();
         startScanUseCase = new StartScanUseCase(application, repository);
     }
 
@@ -68,8 +73,9 @@ public class ScannerViewModel extends AndroidViewModel {
         currentSession = new ScanSession(System.currentTimeMillis(), "Network " + subnet);
         repository.insertSession(currentSession, sessionId -> {
             currentSessionId = sessionId;
+            int timeout = settingsManager.getScanTimeout();
             
-            startScanUseCase.execute(subnet, new NetworkScanner.ScanCallback() {
+            startScanUseCase.execute(subnet, timeout, new NetworkScanner.ScanCallback() {
                 @Override
                 public void onDeviceFound(Device device) {
                     device.setSessionId((int) currentSessionId);
@@ -77,8 +83,9 @@ public class ScannerViewModel extends AndroidViewModel {
                     
                     List<Device> current = discoveredDevices.getValue();
                     if (current != null) {
-                        current.add(device);
-                        discoveredDevices.postValue(current);
+                        List<Device> updated = new ArrayList<>(current);
+                        updated.add(device);
+                        discoveredDevices.postValue(updated);
                     }
                 }
 

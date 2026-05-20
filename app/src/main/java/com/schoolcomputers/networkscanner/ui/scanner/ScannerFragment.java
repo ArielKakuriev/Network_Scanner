@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -30,6 +31,7 @@ import com.schoolcomputers.networkscanner.data.model.Device;
 import com.schoolcomputers.networkscanner.scanner.PortScanner;
 import com.schoolcomputers.networkscanner.util.NetworkUtils;
 import com.schoolcomputers.networkscanner.util.NetworkStateReceiver;
+import com.schoolcomputers.networkscanner.util.PermissionManager;
 import androidx.core.content.ContextCompat;
 import android.widget.TextView;
 import android.widget.LinearLayout;
@@ -50,18 +52,7 @@ public class ScannerFragment extends Fragment {
     private TextView tvNetworkName;
     private TextView tvIpAddress;
     private NetworkStateReceiver networkStateReceiver;
-
-    private final ActivityResultLauncher<String[]> permissionLauncher = registerForActivityResult(
-            new ActivityResultContracts.RequestMultiplePermissions(),
-            result -> {
-                Boolean fineLocation = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
-                if (fineLocation != null && fineLocation) {
-                    startScan();
-                } else {
-                    Snackbar.make(requireView(), "Location permission is required for scanning", Snackbar.LENGTH_LONG).show();
-                }
-            }
-    );
+    private PermissionManager permissionManager;
 
     @Nullable
     @Override
@@ -81,6 +72,8 @@ public class ScannerFragment extends Fragment {
         adapter.setOnDeviceClickListener(this::showDeviceDetails);
         
         setupNetworkReceiver();
+        
+        permissionManager = new PermissionManager((AppCompatActivity) requireActivity());
 
         return view;
     }
@@ -117,7 +110,7 @@ public class ScannerFragment extends Fragment {
 
         viewModel.getDiscoveredDevices().observe(getViewLifecycleOwner(), devices -> {
             adapter.setDevices(devices);
-            emptyState.setVisibility(devices.isEmpty() ? View.VISIBLE : View.GONE);
+            emptyState.setVisibility(devices == null || devices.isEmpty() ? View.VISIBLE : View.GONE);
         });
 
         viewModel.getIsScanning().observe(getViewLifecycleOwner(), isScanning -> {
@@ -140,7 +133,7 @@ public class ScannerFragment extends Fragment {
                 btnScan.setEnabled(isConnected);
             }
             if (!isConnected) {
-                Snackbar.make(view, "No Wi-Fi connection", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(view, "No Wi-Fi connection", Snackbar.LENGTH_SHORT)
                         .setAction("Dismiss", v -> {})
                         .show();
             }
@@ -149,18 +142,31 @@ public class ScannerFragment extends Fragment {
         viewModel.getNetworkName().observe(getViewLifecycleOwner(), name -> {
             tvNetworkName.setText(name);
             tvIpAddress.setText("IP: " + NetworkUtils.getLocalIpAddress(requireContext()));
+            
+            if (name.equals("Wi-Fi Connected") || name.equals("<unknown ssid>")) {
+                if (!NetworkUtils.isLocationEnabled(requireContext())) {
+                    Snackbar.make(requireView(), "Enable Location to see Wi-Fi name (SSID)", Snackbar.LENGTH_LONG)
+                            .setAction("Settings", v -> {
+                                startActivity(new android.content.Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            }).show();
+                }
+            }
         });
     }
 
     private void checkPermissionsAndScan() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            startScan();
-        } else {
-            permissionLauncher.launch(new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            });
-        }
+        permissionManager.checkAndRequestPermissions(new PermissionManager.PermissionCallback() {
+            @Override
+            public void onPermissionsGranted() {
+                startScan();
+            }
+
+            @Override
+            public void onPermissionsDenied(List<String> deniedPermissions) {
+                Snackbar.make(requireView(), "Permissions required for scanning", Snackbar.LENGTH_LONG).show();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
     }
 
     private void startScan() {

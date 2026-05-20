@@ -13,7 +13,8 @@ public class StartScanUseCase {
         this.scanner = new NetworkScanner(context);
     }
 
-    public void execute(String subnet, NetworkScanner.ScanCallback callback) {
+    public void execute(String subnet, int timeout, NetworkScanner.ScanCallback callback) {
+        scanner.setReachableTimeout(timeout);
         scanner.startScan(subnet, callback);
     }
     

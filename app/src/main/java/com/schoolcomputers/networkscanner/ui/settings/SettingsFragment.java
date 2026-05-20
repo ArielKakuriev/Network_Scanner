@@ -58,7 +58,16 @@ public class SettingsFragment extends Fragment {
         });
 
         btnClearHistory.setOnClickListener(v -> {
-            viewModel.clearHistory();
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Clear History")
+                    .setMessage("Are you sure you want to delete all scan records?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        viewModel.clearHistory();
+                        com.google.android.material.snackbar.Snackbar.make(requireView(), 
+                                "History cleared", com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
         });
     }
 }

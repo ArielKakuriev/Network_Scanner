@@ -15,6 +15,7 @@ import com.schoolcomputers.networkscanner.ui.history.HistoryFragment;
 import com.schoolcomputers.networkscanner.ui.scanner.ScannerFragment;
 import com.schoolcomputers.networkscanner.ui.settings.SettingsFragment;
 import com.schoolcomputers.networkscanner.util.PermissionManager;
+import com.schoolcomputers.networkscanner.util.SettingsManager;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        new SettingsManager(this).initTheme();
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.schoolcomputers.networkscanner.data.model.ScanSession;
 import com.schoolcomputers.networkscanner.data.repository.NetworkRepository;
+import com.schoolcomputers.networkscanner.NetworkScannerApp;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class HistoryViewModel extends AndroidViewModel {
 
     public HistoryViewModel(@NonNull Application application) {
         super(application);
-        repository = new NetworkRepository(application);
+        repository = ((NetworkScannerApp) application).getRepository();
         allSessions = repository.getAllSessions();
     }
 

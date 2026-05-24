@@ -20,28 +20,15 @@
         android:padding="16dp"
         android:gravity="center_vertical">
 
-        <!-- Online indicator dot + icon -->
-        <FrameLayout
-            android:layout_width="48dp"
-            android:layout_height="48dp">
+        <!-- Wi-Fi icon -->
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_wifi"
+            android:tint="@color/primary"
+            android:contentDescription="network" />
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_device"
-                android:tint="@color/primary"
-                android:contentDescription="device" />
-
-            <!-- Green dot: online indicator -->
-            <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_gravity="bottom|end"
-                android:background="@drawable/bg_online_dot" />
-        </FrameLayout>
-
-        <!-- Text info -->
+        <!-- Text -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -50,10 +37,10 @@
             android:layout_marginStart="12dp">
 
             <TextView
-                android:id="@+id/tvDeviceHostname"
+                android:id="@+id/tvScanName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="—"
+                android:text="Network Scan"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/on_surface"
@@ -61,34 +48,47 @@
                 android:ellipsize="end" />
 
             <TextView
-                android:id="@+id/tvDeviceIp"
+                android:id="@+id/tvScanDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="—"
-                android:textSize="14sp"
-                android:textColor="@color/primary"
-                android:fontFamily="monospace" />
-
-            <TextView
-                android:id="@+id/tvDeviceMac"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="—"
-                android:textSize="12sp"
-                android:textColor="@color/text_secondary"
-                android:fontFamily="monospace" />
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary" />
 
         </LinearLayout>
 
-        <!-- Chevron -->
+        <!-- Device count badge -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/tvDeviceCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="devices"
+                android:textSize="10sp"
+                android:textColor="@color/text_secondary" />
+        </LinearLayout>
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_chevron_right"
             android:tint="@color/text_secondary"
-            android:contentDescription="details" />
+            android:contentDescription="open" />
 
     </LinearLayout>
 

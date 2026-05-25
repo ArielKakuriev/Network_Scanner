@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        android:title="About Me"
+        android:titleTextColor="@color/on_primary" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Avatar placeholder -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingVertical="24dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_device"
+                    android:tint="@color/primary"
+                    android:contentDescription="device icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="This Device"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/on_background" />
+            </LinearLayout>
+
+            <!-- Device network info card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardStyle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NETWORK IDENTITY"
+                        style="@style/SectionHeader" />
+
+                    <!-- Connected SSID -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:paddingTop="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/label_connected_ssid" android:textSize="12sp" android:textColor="@color/text_secondary"/>
+                        <TextView android:id="@+id/tvConnectedSsid" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:text="—" style="@style/ValueText"/>
+                    </LinearLayout>
+
+                    <!-- Device IP -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:paddingTop="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/label_device_ip" android:textSize="12sp" android:textColor="@color/text_secondary"/>
+                        <TextView android:id="@+id/tvDeviceIp" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:text="—" style="@style/ValueText"/>
+                    </LinearLayout>
+
+                    <!-- Device MAC -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:paddingTop="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/label_device_mac" android:textSize="12sp" android:textColor="@color/text_secondary"/>
+                        <TextView android:id="@+id/tvDeviceMac" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:text="—" style="@style/ValueText"/>
+                    </LinearLayout>
+
+                    <!-- Router IP -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:paddingTop="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/label_router_ip" android:textSize="12sp" android:textColor="@color/text_secondary"/>
+                        <TextView android:id="@+id/tvRouterIp" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:text="—" style="@style/ValueText"/>
+                    </LinearLayout>
+
+                    <!-- Router MAC -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:paddingTop="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/label_router_mac" android:textSize="12sp" android:textColor="@color/text_secondary"/>
+                        <TextView android:id="@+id/tvRouterMac" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:text="—" style="@style/ValueText"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

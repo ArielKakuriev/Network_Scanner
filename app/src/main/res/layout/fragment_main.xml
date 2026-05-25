@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary"
+            android:title="Network Scanner"
+            android:titleTextColor="@color/on_primary"
+            app:titleTextAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <!-- Scan button area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="24dp"
+            android:paddingBottom="16dp"
+            android:background="@color/surface"
+            android:elevation="2dp">
+
+            <!-- Big scan button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnScan"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:text="@string/btn_scan"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/on_primary"
+                app:cornerRadius="100dp"
+                android:backgroundTint="@color/primary"
+                app:icon="@drawable/ic_scan"
+                app:iconSize="48dp"
+                app:iconGravity="top"
+                app:iconTint="@color/on_primary"
+                android:gravity="center"
+                app:iconPadding="8dp" />
+
+            <!-- Status text -->
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/tv_tap_to_scan"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary" />
+
+            <!-- Progress bar -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="280dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="12dp"
+                android:max="100"
+                android:progress="0"
+                android:visibility="gone"
+                app:layout_constraintWidth_max="280dp" />
+
+            <TextView
+                android:id="@+id/tvProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="0%"
+                android:textSize="12sp"
+                android:textColor="@color/primary"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <!-- Results header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:text="DISCOVERED DEVICES"
+            style="@style/SectionHeader" />
+
+        <!-- Device list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDevices"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

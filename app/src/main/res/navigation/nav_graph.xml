@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <!-- Bottom nav destinations -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.schoolcomputers.networkscanner.fragments.SettingsFragment"
+        android:label="Settings" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.schoolcomputers.networkscanner.fragments.HistoryFragment"
+        android:label="History">
+        <action
+            android:id="@+id/action_historyFragment_to_scanDevicesFragment"
+            app:destination="@id/scanDevicesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.schoolcomputers.networkscanner.fragments.MainFragment"
+        android:label="Main">
+        <action
+            android:id="@+id/action_mainFragment_to_deviceDetailFragment"
+            app:destination="@id/deviceDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myNetworkFragment"
+        android:name="com.schoolcomputers.networkscanner.fragments.MyNetworkFragment"
+        android:label="My Network" />
+
+    <fragment
+        android:id="@+id/aboutMeFragment"
+        android:name="com.schoolcomputers.networkscanner.fragments.AboutMeFragment"
+        android:label="About Me" />
+
+    <!-- Secondary destinations (not in bottom nav) -->
+    <fragment
+        android:id="@+id/deviceDetailFragment"
+        android:name="com.schoolcomputers.networkscanner.fragments.DeviceDetailFragment"
+        android:label="Device Details">
+        <argument android:name="ip"        android:defaultValue="" />
+        <argument android:name="mac"       android:defaultValue="" />
+        <argument android:name="hostname"  android:defaultValue="" />
+        <argument android:name="routerIp"  android:defaultValue="" />
+        <argument android:name="routerMac" android:defaultValue="" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/scanDevicesFragment"
+        android:name="com.schoolcomputers.networkscanner.fragments.ScanDevicesFragment"
+        android:label="Scan Devices">
+        <argument android:name="scanId"   android:defaultValue="-1" />
+        <argument android:name="scanName" android:defaultValue="" />
+        <action
+            android:id="@+id/action_scanDevicesFragment_to_deviceDetailFragment"
+            app:destination="@id/deviceDetailFragment" />
+    </fragment>
+
+</navigation>

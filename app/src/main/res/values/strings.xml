@@ -1,3 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Network_Scanner</string>
+    <string name="app_name">Network Scanner</string>
+
+    <!-- Bottom nav labels -->
+    <string name="nav_settings">Settings</string>
+    <string name="nav_history">History</string>
+    <string name="nav_main">Main</string>
+    <string name="nav_my_network">My Network</string>
+    <string name="nav_about_me">About Me</string>
+
+    <!-- Auth -->
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_re_password">Confirm Password</string>
+    <string name="hint_email">Email</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_send_reset">Send Reset Code</string>
+
+    <!-- Main -->
+    <string name="btn_scan">Scan Network</string>
+    <string name="btn_cancel_scan">Cancel Scan</string>
+    <string name="tv_tap_to_scan">Tap the button to scan your network</string>
+
+    <!-- History -->
+    <string name="btn_clear_history">Clear History</string>
+    <string name="tv_no_history">No scans yet. Run a scan first!</string>
+
+    <!-- Settings -->
+    <string name="settings_account">My Account</string>
+    <string name="settings_preferences">Preferences</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="btn_change_password">Change Password</string>
+    <string name="switch_notifications">Enable Notifications</string>
+
+    <!-- My Network -->
+    <string name="label_ssid">Network Name (SSID)</string>
+    <string name="label_router_ip">Router IP</string>
+    <string name="label_router_mac">Router MAC</string>
+    <string name="label_devices">Devices Connected</string>
+    <string name="label_link_speed">Link Speed</string>
+    <string name="label_signal">Signal Strength</string>
+    <string name="btn_speed_test">Run Speed Test</string>
+
+    <!-- About Me -->
+    <string name="label_connected_ssid">Connected Network</string>
+    <string name="label_device_ip">My IP Address</string>
+    <string name="label_device_mac">My MAC Address</string>
+
+    <!-- Device detail -->
+    <string name="label_ip">IP Address</string>
+    <string name="label_mac">MAC Address</string>
+    <string name="label_hostname">Hostname</string>
 </resources>

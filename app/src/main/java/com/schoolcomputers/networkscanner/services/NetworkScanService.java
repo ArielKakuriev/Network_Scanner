@@ -1,4 +1,4 @@
-package com.networkscanner.services;
+package com.schoolcomputers.networkscanner.services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -7,23 +7,23 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.networkscanner.database.AppDatabase;
-import com.networkscanner.database.ScanDao;
-import com.networkscanner.models.Device;
-import com.networkscanner.models.NetworkInfo;
-import com.networkscanner.models.ScanRecord;
-import com.networkscanner.utils.NetworkScanner;
-import com.networkscanner.utils.NetworkUtils;
-import com.networkscanner.utils.NotificationHelper;
+import com.schoolcomputers.networkscanner.database.AppDatabase;
+import com.schoolcomputers.networkscanner.database.ScanDao;
+import com.schoolcomputers.networkscanner.models.Device;
+import com.schoolcomputers.networkscanner.models.NetworkInfo;
+import com.schoolcomputers.networkscanner.models.ScanRecord;
+import com.schoolcomputers.networkscanner.utils.NetworkScanner;
+import com.schoolcomputers.networkscanner.utils.NetworkUtils;
+import com.schoolcomputers.networkscanner.utils.NotificationHelper;
 
 import java.util.List;
 
 /**
  * Foreground-capable Service that can execute a network scan independently
  * of any Activity lifecycle.
- *
+
  * Satisfies the "Writing a substantial Service class" requirement.
- *
+
  * Start with:
  *   Intent intent = new Intent(context, NetworkScanService.class);
  *   intent.putExtra("networkName", "My Home");

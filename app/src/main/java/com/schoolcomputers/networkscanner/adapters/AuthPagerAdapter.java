@@ -1,13 +1,13 @@
-package com.networkscanner.adapters;
+package com.schoolcomputers.networkscanner.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.networkscanner.fragments.ForgotPasswordFragment;
-import com.networkscanner.fragments.LoginFragment;
-import com.networkscanner.fragments.RegisterFragment;
+import com.schoolcomputers.networkscanner.fragments.ForgotPasswordFragment;
+import com.schoolcomputers.networkscanner.fragments.LoginFragment;
+import com.schoolcomputers.networkscanner.fragments.RegisterFragment;
 
 /**
  * ViewPager2 adapter for the AuthActivity.

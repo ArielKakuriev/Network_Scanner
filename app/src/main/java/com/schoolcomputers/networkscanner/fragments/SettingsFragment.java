@@ -1,4 +1,4 @@
-package com.networkscanner.fragments;
+package com.schoolcomputers.networkscanner.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -18,10 +18,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.networkscanner.R;
-import com.networkscanner.activities.AuthActivity;
-import com.networkscanner.models.User;
-import com.networkscanner.viewmodels.AuthViewModel;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.activities.AuthActivity;
+import com.schoolcomputers.networkscanner.models.User;
+import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
 
 /**
  * "Settings" tab.

@@ -1,4 +1,4 @@
-package com.networkscanner.fragments;
+package com.schoolcomputers.networkscanner.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.networkscanner.R;
-import com.networkscanner.models.NetworkInfo;
-import com.networkscanner.viewmodels.ScanViewModel;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.models.NetworkInfo;
+import com.schoolcomputers.networkscanner.viewmodels.ScanViewModel;
 
 /**
  * "About Me" tab.

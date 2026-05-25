@@ -1,4 +1,4 @@
-package com.networkscanner.services;
+package com.schoolcomputers.networkscanner.services;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,14 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.networkscanner.database.AppDatabase;
-import com.networkscanner.database.ScanDao;
-import com.networkscanner.models.Device;
-import com.networkscanner.models.NetworkInfo;
-import com.networkscanner.models.ScanRecord;
-import com.networkscanner.utils.NetworkScanner;
-import com.networkscanner.utils.NetworkUtils;
-import com.networkscanner.utils.NotificationHelper;
+import com.schoolcomputers.networkscanner.database.AppDatabase;
+import com.schoolcomputers.networkscanner.database.ScanDao;
+import com.schoolcomputers.networkscanner.models.Device;
+import com.schoolcomputers.networkscanner.models.NetworkInfo;
+import com.schoolcomputers.networkscanner.models.ScanRecord;
+import com.schoolcomputers.networkscanner.utils.NetworkScanner;
+import com.schoolcomputers.networkscanner.utils.NetworkUtils;
+import com.schoolcomputers.networkscanner.utils.NotificationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * WorkManager worker that performs a periodic network scan in the background.
- *
+
  * Satisfies the "Job Scheduler / Work Manager" requirement.
- *
+
  * Schedule with:
  *   PeriodicWorkRequest req = new PeriodicWorkRequest.Builder(
  *       PeriodicScanWorker.class, 15, TimeUnit.MINUTES).build();

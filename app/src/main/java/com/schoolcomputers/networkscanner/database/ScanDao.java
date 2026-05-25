@@ -1,4 +1,4 @@
-package com.networkscanner.database;
+package com.schoolcomputers.networkscanner.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -9,9 +9,9 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.networkscanner.models.Device;
-import com.networkscanner.models.ScanRecord;
-import com.networkscanner.models.ScanWithDevices;
+import com.schoolcomputers.networkscanner.models.Device;
+import com.schoolcomputers.networkscanner.models.ScanRecord;
+import com.schoolcomputers.networkscanner.models.ScanWithDevices;
 
 import java.util.List;
 

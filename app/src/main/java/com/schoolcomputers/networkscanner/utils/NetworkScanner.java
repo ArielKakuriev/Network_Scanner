@@ -1,10 +1,10 @@
-package com.networkscanner.utils;
+package com.schoolcomputers.networkscanner.utils;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.networkscanner.models.Device;
+import com.schoolcomputers.networkscanner.models.Device;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -17,11 +17,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Core scanning engine.
- *
+
  * Uses a fixed thread pool (Handler/Thread pattern) to ping all 254 hosts in
  * a /24 subnet concurrently. Satisfies the "Handler / Thread" requirement and
  * "complex algorithmic model" requirement.
- *
+
  * Progress and result callbacks are delivered on the main thread via {@link Handler}.
  */
 public class NetworkScanner {

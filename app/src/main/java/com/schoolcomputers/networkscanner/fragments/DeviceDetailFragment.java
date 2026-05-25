@@ -1,4 +1,4 @@
-package com.networkscanner.fragments;
+package com.schoolcomputers.networkscanner.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.networkscanner.R;
+import com.schoolcomputers.networkscanner.R;
 
 /**
  * Detail screen for a single device.

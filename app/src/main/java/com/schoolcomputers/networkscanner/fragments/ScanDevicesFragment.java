@@ -1,4 +1,4 @@
-package com.networkscanner.fragments;
+package com.schoolcomputers.networkscanner.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,9 +14,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.networkscanner.R;
-import com.networkscanner.adapters.DeviceAdapter;
-import com.networkscanner.viewmodels.ScanViewModel;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.adapters.DeviceAdapter;
+import com.schoolcomputers.networkscanner.viewmodels.ScanViewModel;
 
 import java.util.ArrayList;
 

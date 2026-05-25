@@ -1,4 +1,4 @@
-package com.networkscanner.activities;
+package com.schoolcomputers.networkscanner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.networkscanner.R;
-import com.networkscanner.adapters.AuthPagerAdapter;
-import com.networkscanner.viewmodels.AuthViewModel;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.adapters.AuthPagerAdapter;
+import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
 
 /**
  * Container activity for authentication flows.

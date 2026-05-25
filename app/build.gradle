@@ -1,14 +1,14 @@
 plugins {
-    id 'com.android.application'
+    alias(libs.plugins.android.application)
     id 'com.google.gms.google-services'
 }
 
 android {
-    namespace 'com.networkscanner'
+    namespace 'com.schoolcomputers.networkscanner'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.networkscanner"
+        applicationId "com.schoolcomputers.networkscanner"
         minSdk 26
         targetSdk 34
         versionCode 1
@@ -35,9 +35,9 @@ android {
 
 dependencies {
     // AndroidX core
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.cardview:cardview:1.0.0'
 
@@ -51,8 +51,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime:2.7.0'
 
     // Room database
-    implementation 'androidx.room:room-runtime:2.6.1'
-    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    implementation libs.room.runtime
+    annotationProcessor libs.room.compiler
 
     // Firebase (Auth + Firestore)
     implementation platform('com.google.firebase:firebase-bom:32.7.1')

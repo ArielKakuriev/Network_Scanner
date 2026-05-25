@@ -1,4 +1,4 @@
-package com.networkscanner.activities;
+package com.schoolcomputers.networkscanner.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.networkscanner.R;
+import com.schoolcomputers.networkscanner.R;
 
 import java.util.ArrayList;
 import java.util.List;

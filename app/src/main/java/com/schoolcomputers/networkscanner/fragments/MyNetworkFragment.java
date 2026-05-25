@@ -1,4 +1,4 @@
-package com.networkscanner.fragments;
+package com.schoolcomputers.networkscanner.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,10 +14,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.networkscanner.R;
-import com.networkscanner.models.NetworkInfo;
-import com.networkscanner.utils.SpeedTestHelper;
-import com.networkscanner.viewmodels.ScanViewModel;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.models.NetworkInfo;
+import com.schoolcomputers.networkscanner.utils.SpeedTestHelper;
+import com.schoolcomputers.networkscanner.viewmodels.ScanViewModel;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

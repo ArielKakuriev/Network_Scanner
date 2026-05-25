@@ -1,4 +1,4 @@
-package com.networkscanner.database;
+package com.schoolcomputers.networkscanner.database;
 
 import android.content.Context;
 
@@ -6,8 +6,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.networkscanner.models.Device;
-import com.networkscanner.models.ScanRecord;
+import com.schoolcomputers.networkscanner.models.Device;
+import com.schoolcomputers.networkscanner.models.ScanRecord;
 
 /**
  * Room database for the Network Scanner app.

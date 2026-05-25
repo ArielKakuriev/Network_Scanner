@@ -1,4 +1,4 @@
-package com.networkscanner.models;
+package com.schoolcomputers.networkscanner.models;
 
 /**
  * Local representation of the authenticated user.

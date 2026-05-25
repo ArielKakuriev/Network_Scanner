@@ -1,4 +1,4 @@
-package com.networkscanner.utils;
+package com.schoolcomputers.networkscanner.utils;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

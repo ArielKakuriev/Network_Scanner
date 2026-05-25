@@ -1,4 +1,4 @@
-package com.networkscanner.database;
+package com.schoolcomputers.networkscanner.database;
 
 /**
  * Value object returned by the GROUP BY query in {@link ScanDao#getDeviceCountPerSsid()}.

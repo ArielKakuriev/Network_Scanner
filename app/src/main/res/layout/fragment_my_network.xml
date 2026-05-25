@@ -207,7 +207,7 @@
                             android:layout_marginTop="8dp"
                             android:visibility="gone"
                             app:trackCornerRadius="4dp"
-                            app:indeterminate="true" />
+                            android:indeterminate="true" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnSpeedTest"

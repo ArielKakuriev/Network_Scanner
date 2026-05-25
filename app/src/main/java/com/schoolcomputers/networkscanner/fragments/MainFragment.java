@@ -1,4 +1,4 @@
-package com.networkscanner.fragments;
+package com.schoolcomputers.networkscanner.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -20,11 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.networkscanner.R;
-import com.networkscanner.adapters.DeviceAdapter;
-import com.networkscanner.models.Device;
-import com.networkscanner.utils.NotificationHelper;
-import com.networkscanner.viewmodels.ScanViewModel;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.adapters.DeviceAdapter;
+import com.schoolcomputers.networkscanner.models.Device;
+import com.schoolcomputers.networkscanner.utils.NotificationHelper;
+import com.schoolcomputers.networkscanner.viewmodels.ScanViewModel;
 
 import java.util.ArrayList;
 
@@ -130,7 +130,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    /** Shows a dialog to let the user name the scan after it completes. */
+    /** Shows a dialog to let the username the scan after it completes. */
     private void promptForNetworkName() {
         if (!isAdded()) return;
 

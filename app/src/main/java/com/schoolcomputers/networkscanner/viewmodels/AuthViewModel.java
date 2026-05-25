@@ -1,4 +1,4 @@
-package com.networkscanner.viewmodels;
+package com.schoolcomputers.networkscanner.viewmodels;
 
 import android.app.Application;
 
@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.networkscanner.models.User;
+import com.schoolcomputers.networkscanner.models.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class AuthViewModel extends AndroidViewModel {
     public void login(String usernameOrEmail, String password) {
         loading.setValue(true);
 
-        // If looks like an email, sign in directly
+        // If it looks like an email, sign in directly
         if (usernameOrEmail.contains("@")) {
             signInWithEmail(usernameOrEmail, password);
         } else {
@@ -192,7 +192,12 @@ public class AuthViewModel extends AndroidViewModel {
                       doc.getString("email")
                   );
                   result.postValue(u);
+              } else {
+                  result.postValue(null);
               }
+          })
+          .addOnFailureListener(e -> {
+              result.postValue(null);
           });
         return result;
     }

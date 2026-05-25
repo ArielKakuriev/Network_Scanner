@@ -1,4 +1,4 @@
-package com.networkscanner.viewmodels;
+package com.schoolcomputers.networkscanner.viewmodels;
 
 import android.app.Application;
 import android.util.Log;
@@ -8,14 +8,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.networkscanner.database.AppDatabase;
-import com.networkscanner.database.ScanDao;
-import com.networkscanner.models.Device;
-import com.networkscanner.models.NetworkInfo;
-import com.networkscanner.models.ScanRecord;
-import com.networkscanner.models.ScanWithDevices;
-import com.networkscanner.utils.NetworkScanner;
-import com.networkscanner.utils.NetworkUtils;
+import com.schoolcomputers.networkscanner.database.AppDatabase;
+import com.schoolcomputers.networkscanner.database.ScanDao;
+import com.schoolcomputers.networkscanner.models.Device;
+import com.schoolcomputers.networkscanner.models.NetworkInfo;
+import com.schoolcomputers.networkscanner.models.ScanRecord;
+import com.schoolcomputers.networkscanner.models.ScanWithDevices;
+import com.schoolcomputers.networkscanner.utils.NetworkScanner;
+import com.schoolcomputers.networkscanner.utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;

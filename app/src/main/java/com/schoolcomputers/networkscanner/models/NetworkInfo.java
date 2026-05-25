@@ -1,8 +1,8 @@
-package com.networkscanner.models;
+package com.schoolcomputers.networkscanner.models;
 
 /**
  * Snapshot of the current Wi-Fi network state.
- * Built by {@link com.networkscanner.utils.NetworkUtils} and exposed via ViewModel LiveData.
+ * Built by {@link com.schoolcomputers.networkscanner.utils.NetworkUtils} and exposed via ViewModel LiveData.
  */
 public class NetworkInfo {
 

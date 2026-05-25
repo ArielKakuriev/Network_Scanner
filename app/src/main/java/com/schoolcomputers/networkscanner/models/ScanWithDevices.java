@@ -1,4 +1,4 @@
-package com.networkscanner.models;
+package com.schoolcomputers.networkscanner.models;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;

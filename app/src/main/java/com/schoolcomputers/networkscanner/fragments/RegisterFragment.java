@@ -1,4 +1,4 @@
-package com.networkscanner.fragments;
+package com.schoolcomputers.networkscanner.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
-import com.networkscanner.R;
-import com.networkscanner.utils.ValidationUtils;
-import com.networkscanner.viewmodels.AuthViewModel;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.utils.ValidationUtils;
+import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
 
 /**
  * Register fragment (username, password, re-password, email).
@@ -53,7 +53,7 @@ public class RegisterFragment extends Fragment {
 
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), msg -> {
             if (msg != null && !msg.isEmpty())
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
         });
 
         viewModel.getSuccessMessage().observe(getViewLifecycleOwner(), msg -> {

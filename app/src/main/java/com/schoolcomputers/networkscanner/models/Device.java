@@ -1,4 +1,4 @@
-package com.networkscanner.models;
+package com.schoolcomputers.networkscanner.models;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -27,13 +27,13 @@ public class Device {
     /** FK to the parent ScanRecord */
     public long scanId;
 
-    /** Human-readable hostname (may be null if not resolvable) */
+    /** Human-readable hostname (can be null if not resolvable) */
     public String hostname;
 
     /** IPv4 address of this device */
     public String ipAddress;
 
-    /** MAC address (may be null on Android 10+ for non-router devices) */
+    /** MAC address (can be null on Android 10+ for non-router devices) */
     public String macAddress;
 
     /** Router / gateway IPv4 */

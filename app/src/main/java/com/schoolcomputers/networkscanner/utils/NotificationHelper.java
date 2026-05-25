@@ -1,4 +1,4 @@
-package com.networkscanner.utils;
+package com.schoolcomputers.networkscanner.utils;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,11 +9,11 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-import com.networkscanner.R;
-import com.networkscanner.activities.MainActivity;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.activities.MainActivity;
 
 /**
- * Centralises all notification creation for the app.
+ * Centralizes all notification creation for the app.
  * Creates channels on first use (Android 8+).
  */
 public class NotificationHelper {

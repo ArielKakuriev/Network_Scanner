@@ -1,4 +1,4 @@
-package com.networkscanner.adapters;
+package com.schoolcomputers.networkscanner.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.networkscanner.R;
-import com.networkscanner.models.Device;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.models.Device;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * RecyclerView adapter for a list of {@link Device} objects.
- *
+
  * Uses {@link DiffUtil} for efficient diff-based updates —
  * satisfies the ObservableCollection + RecyclerView requirement.
- *
+
  * Exposes a click listener callback for device detail navigation.
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {

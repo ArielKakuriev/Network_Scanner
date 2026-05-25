@@ -1,4 +1,4 @@
-package com.networkscanner.adapters;
+package com.schoolcomputers.networkscanner.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.networkscanner.R;
-import com.networkscanner.models.ScanRecord;
-import com.networkscanner.models.ScanWithDevices;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.models.ScanRecord;
+import com.schoolcomputers.networkscanner.models.ScanWithDevices;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

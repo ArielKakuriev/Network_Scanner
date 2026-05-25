@@ -1,4 +1,4 @@
-package com.networkscanner.activities;
+package com.schoolcomputers.networkscanner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.networkscanner.R;
+import com.schoolcomputers.networkscanner.R;
 
 /**
  * Splash screen shown at launch.

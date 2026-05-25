@@ -23,7 +23,7 @@
 
         <!-- Splash / Auth entry point -->
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.schoolcomputers.networkscanner.activities.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.NetworkScanner.Splash">
             <intent-filter>
@@ -33,17 +33,17 @@
         </activity>
 
         <activity
-            android:name=".activities.AuthActivity"
+            android:name="com.schoolcomputers.networkscanner.activities.AuthActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.schoolcomputers.networkscanner.activities.MainActivity"
             android:exported="false" />
 
         <!-- Background scan service -->
         <service
-            android:name=".services.NetworkScanService"
+            android:name="com.schoolcomputers.networkscanner.services.NetworkScanService"
             android:exported="false" />
 
         <!-- WorkManager worker (no manifest entry needed; registered in code) -->

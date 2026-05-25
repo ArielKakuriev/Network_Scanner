@@ -1,4 +1,4 @@
-package com.networkscanner.utils;
+package com.schoolcomputers.networkscanner.utils;
 
 import android.content.Context;
 import android.net.DhcpInfo;
@@ -7,7 +7,7 @@ import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 import android.util.Log;
 
-import com.networkscanner.models.NetworkInfo;
+import com.schoolcomputers.networkscanner.models.NetworkInfo;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

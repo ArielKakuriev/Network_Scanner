@@ -1,4 +1,4 @@
-package com.networkscanner.fragments;
+package com.schoolcomputers.networkscanner.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.networkscanner.R;
-import com.networkscanner.adapters.HistoryAdapter;
-import com.networkscanner.viewmodels.ScanViewModel;
+import com.schoolcomputers.networkscanner.R;
+import com.schoolcomputers.networkscanner.adapters.HistoryAdapter;
+import com.schoolcomputers.networkscanner.viewmodels.ScanViewModel;
 
 import java.util.ArrayList;
 

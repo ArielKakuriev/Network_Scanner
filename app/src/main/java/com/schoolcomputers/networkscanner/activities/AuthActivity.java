@@ -14,9 +14,8 @@ import com.schoolcomputers.networkscanner.adapters.AuthPagerAdapter;
 import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
 
 /**
- * Container activity for authentication flows.
- * Uses ViewPager2 + TabLayout to host Login, Register, and Forgot-Password fragments.
- * This satisfies the "ViewPager in combination with Fragment" requirement.
+ * Hosts Login / Register / Forgot-Password tabs in a ViewPager2.
+ * Observes FirebaseUser (not an integer userId) from AuthViewModel.
  */
 public class AuthActivity extends AppCompatActivity {
 
@@ -29,7 +28,7 @@ public class AuthActivity extends AppCompatActivity {
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
-        // If already signed in, go straight to main
+        // If already signed in via Firebase, skip auth screens
         if (authViewModel.isSignedIn()) {
             navigateToMain();
             return;
@@ -39,7 +38,6 @@ public class AuthActivity extends AppCompatActivity {
         TabLayout  tabLayout = findViewById(R.id.tabLayoutAuth);
 
         viewPager.setAdapter(new AuthPagerAdapter(this));
-
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0: tab.setText("Login");           break;
@@ -48,7 +46,7 @@ public class AuthActivity extends AppCompatActivity {
             }
         }).attach();
 
-        // Observe successful login → navigate to main
+        // FirebaseUser non-null → login/register succeeded → go to main
         authViewModel.getCurrentUser().observe(this, user -> {
             if (user != null) navigateToMain();
         });

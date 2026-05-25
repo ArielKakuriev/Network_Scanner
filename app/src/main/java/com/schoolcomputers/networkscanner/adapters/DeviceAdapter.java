@@ -96,11 +96,24 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
         }
 
         void bind(Device device, OnDeviceClickListener listener) {
+            if (device == null) {
+                tvIp.setText("—");
+                tvMac.setText("Unknown MAC");
+                tvHostname.setText("—");
+                itemView.setOnClickListener(null);
+                return;
+            }
             tvIp.setText(device.ipAddress != null ? device.ipAddress : "—");
             tvMac.setText(device.macAddress != null ? device.macAddress : "Unknown MAC");
-            tvHostname.setText(device.hostname != null ? device.hostname : device.ipAddress);
+            tvHostname.setText(device.hostname != null ? device.hostname : device.ipAddress != null ? device.ipAddress : "—");
             itemView.setOnClickListener(v -> {
-                if (listener != null) listener.onDeviceClick(device);
+                if (listener != null && device != null) {
+                    try {
+                        listener.onDeviceClick(device);
+                    } catch (Exception e) {
+                        android.util.Log.e("DeviceAdapter", "Error on device click", e);
+                    }
+                }
             });
         }
     }

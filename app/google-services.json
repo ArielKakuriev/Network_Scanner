@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "441149220664",
-    "project_id": "networkscannerapp-9159a",
-    "storage_bucket": "networkscannerapp-9159a.firebasestorage.app"
+    "project_number": "739512510788",
+    "project_id": "networkscannerapp-3e94a",
+    "storage_bucket": "networkscannerapp-3e94a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:441149220664:android:55e3921fc9fd4d41bf43cd",
+        "mobilesdk_app_id": "1:739512510788:android:2998cf7eb3db3a3304cf11",
         "android_client_info": {
           "package_name": "com.schoolcomputers.networkscanner"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBZR57bgRTFBE02hesQ3IzfcMbItvYMsts"
+          "current_key": "AIzaSyBnqgOCW0yl4sCP8q4vlLDn5qYxknNA4gU"
         }
       ],
       "services": {

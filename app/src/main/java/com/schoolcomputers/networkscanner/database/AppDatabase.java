@@ -10,8 +10,10 @@ import com.schoolcomputers.networkscanner.models.Device;
 import com.schoolcomputers.networkscanner.models.ScanRecord;
 
 /**
- * Room database for the Network Scanner app.
- * Singleton pattern ensures only one instance is created.
+ * Room (SQLite) database for scan data only.
+ *
+ * User accounts are handled by Firebase Auth + Firestore — NOT stored here.
+ * This database only contains ScanRecord and Device tables.
  */
 @Database(
     entities = {ScanRecord.class, Device.class},
@@ -25,9 +27,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ScanDao scanDao();
 
-    /**
-     * Returns the singleton database instance, creating it if necessary.
-     */
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {

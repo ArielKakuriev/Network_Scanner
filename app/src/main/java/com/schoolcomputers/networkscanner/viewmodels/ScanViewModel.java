@@ -96,6 +96,11 @@ public class ScanViewModel extends AndroidViewModel {
 
         ioExecutor.execute(() -> {
             NetworkInfo info = NetworkUtils.getCurrentNetworkInfo(getApplication());
+            if (info == null) {
+                scanState.postValue(ScanState.ERROR);
+                errorMessage.postValue("Unable to get network information.");
+                return;
+            }
             networkInfo.postValue(info);
 
             String ssid = info.getSsid() != null ? info.getSsid() : "Unknown";
@@ -105,7 +110,14 @@ public class ScanViewModel extends AndroidViewModel {
 
             // Insert the ScanRecord placeholder; we'll update deviceCount at the end
             ScanRecord record = new ScanRecord(label, ssid, System.currentTimeMillis(), 0);
-            currentScanId = scanDao.insertScan(record);
+            try {
+                currentScanId = scanDao.insertScan(record);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to insert scan record", e);
+                scanState.postValue(ScanState.ERROR);
+                errorMessage.postValue("Database error: " + e.getMessage());
+                return;
+            }
 
             if (info.getDeviceIp() == null || info.getDeviceIp().isEmpty()) {
                 scanState.postValue(ScanState.ERROR);
@@ -122,6 +134,7 @@ public class ScanViewModel extends AndroidViewModel {
 
                     @Override
                     public void onScanProgress(int scanned, int total, Device foundDevice) {
+                        if (foundDevice == null) return;
                         // Accumulate discovered devices
                         List<Device> current = liveDevices.getValue();
                         if (current == null) current = new ArrayList<>();
@@ -130,17 +143,27 @@ public class ScanViewModel extends AndroidViewModel {
                         scanProgress.postValue((scanned * 100) / total);
 
                         // Persist device to Room off main thread
-                        ioExecutor.execute(() -> scanDao.insertDevice(foundDevice));
+                        ioExecutor.execute(() -> {
+                            try {
+                                scanDao.insertDevice(foundDevice);
+                            } catch (Exception e) {
+                                Log.e(TAG, "Failed to insert device: " + foundDevice.ipAddress, e);
+                            }
+                        });
                     }
 
                     @Override
                     public void onScanComplete(List<Device> devices) {
                         // Update the device count on the ScanRecord
                         ioExecutor.execute(() -> {
-                            ScanRecord sr = scanDao.getScanById(currentScanId);
-                            if (sr != null) {
-                                sr.deviceCount = devices.size();
-                                scanDao.updateScan(sr);
+                            try {
+                                ScanRecord sr = scanDao.getScanById(currentScanId);
+                                if (sr != null) {
+                                    sr.deviceCount = devices != null ? devices.size() : 0;
+                                    scanDao.updateScan(sr);
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, "Failed to update scan record", e);
                             }
                         });
                         scanProgress.postValue(100);
@@ -165,7 +188,15 @@ public class ScanViewModel extends AndroidViewModel {
     // ---- History actions ----
 
     public void clearHistory() {
-        ioExecutor.execute(scanDao::deleteAllScans);
+        ioExecutor.execute(() -> {
+            try {
+                scanDao.deleteAllScans();
+                Log.d(TAG, "History cleared successfully");
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to clear history", e);
+                errorMessage.postValue("Failed to clear history: " + e.getMessage());
+            }
+        });
     }
 
     @Override

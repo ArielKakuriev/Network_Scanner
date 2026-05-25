@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,9 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.schoolcomputers.networkscanner.R;
 
 /**
- * Splash screen shown at launch.
- * After a brief animated pause, routes to AuthActivity or MainActivity
- * depending on whether the user is already signed in.
+ * Splash screen.
+ * Checks Firebase Auth for an existing session — no SQLite involved.
  */
 public class SplashActivity extends AppCompatActivity {
 
@@ -28,9 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // Fade-in animation (not using the Animation class; uses AlphaAnimation which
-        // extends Animation but is a subclass — satisfies "creating an animation" topic)
-        ImageView logo = findViewById(R.id.ivSplashLogo);
+        ImageView logo  = findViewById(R.id.ivSplashLogo);
         TextView  title = findViewById(R.id.tvSplashTitle);
 
         AlphaAnimation fadeIn = new AlphaAnimation(0f, 1f);
@@ -40,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
         title.startAnimation(fadeIn);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            // Firebase keeps the session alive automatically between app launches
             boolean isSignedIn = FirebaseAuth.getInstance().getCurrentUser() != null;
             Intent intent = new Intent(this,
                     isSignedIn ? MainActivity.class : AuthActivity.class);

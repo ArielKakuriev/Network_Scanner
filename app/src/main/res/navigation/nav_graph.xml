@@ -4,7 +4,8 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
 
-    <!-- Bottom nav destinations -->
+    <!-- ── Bottom nav destinations ─────────────────────────────────────── -->
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.SettingsFragment"
@@ -14,18 +15,24 @@
         android:id="@+id/historyFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.HistoryFragment"
         android:label="History">
+        <!-- Action used in HistoryFragment to open a scan's device list -->
         <action
             android:id="@+id/action_historyFragment_to_scanDevicesFragment"
-            app:destination="@id/scanDevicesFragment" />
+            app:destination="@id/scanDevicesFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.MainFragment"
         android:label="Main">
+        <!-- Action used in MainFragment when a device row is tapped -->
         <action
             android:id="@+id/action_mainFragment_to_deviceDetailFragment"
-            app:destination="@id/deviceDetailFragment" />
+            app:destination="@id/deviceDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -38,7 +45,8 @@
         android:name="com.schoolcomputers.networkscanner.fragments.AboutMeFragment"
         android:label="About Me" />
 
-    <!-- Secondary destinations (not in bottom nav) -->
+    <!-- ── Secondary destinations (not in bottom nav) ───────────────────── -->
+
     <fragment
         android:id="@+id/deviceDetailFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.DeviceDetailFragment"
@@ -56,9 +64,12 @@
         android:label="Scan Devices">
         <argument android:name="scanId"   android:defaultValue="-1" />
         <argument android:name="scanName" android:defaultValue="" />
+        <!-- Action used in ScanDevicesFragment when a device row is tapped -->
         <action
             android:id="@+id/action_scanDevicesFragment_to_deviceDetailFragment"
-            app:destination="@id/deviceDetailFragment" />
+            app:destination="@id/deviceDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
 
 </navigation>

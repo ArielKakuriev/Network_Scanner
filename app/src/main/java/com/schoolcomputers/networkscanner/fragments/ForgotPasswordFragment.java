@@ -18,13 +18,15 @@ import com.schoolcomputers.networkscanner.R;
 import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
 
 /**
- * Forgot-password fragment: username + email → sends Firebase reset email.
+ * Forgot-password screen.
+ * User enters username + email → Firebase sends a reset email.
+ * Single step (no local password reset needed — Firebase handles it).
  */
 public class ForgotPasswordFragment extends Fragment {
 
-    private AuthViewModel viewModel;
-    private EditText etUsername, etEmail;
-    private ProgressBar progressBar;
+    private AuthViewModel authViewModel;
+    private EditText      etUsername, etEmail;
+    private ProgressBar   progressBar;
 
     @Nullable
     @Override
@@ -38,25 +40,25 @@ public class ForgotPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel   = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
-        etUsername  = view.findViewById(R.id.etForgotUsername);
-        etEmail     = view.findViewById(R.id.etForgotEmail);
-        progressBar = view.findViewById(R.id.progressForgot);
+        authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+        etUsername    = view.findViewById(R.id.etForgotUsername);
+        etEmail       = view.findViewById(R.id.etForgotEmail);
+        progressBar   = view.findViewById(R.id.progressForgot);
 
         MaterialButton btnSend = view.findViewById(R.id.btnSendReset);
         btnSend.setOnClickListener(v -> sendReset());
 
-        viewModel.isLoading().observe(getViewLifecycleOwner(), loading ->
+        authViewModel.isLoading().observe(getViewLifecycleOwner(), loading ->
                 progressBar.setVisibility(loading ? View.VISIBLE : View.GONE));
 
-        viewModel.getErrorMessage().observe(getViewLifecycleOwner(), msg -> {
+        authViewModel.getErrorMessage().observe(getViewLifecycleOwner(), msg -> {
             if (msg != null && !msg.isEmpty())
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
         });
 
-        viewModel.getSuccessMessage().observe(getViewLifecycleOwner(), msg -> {
+        authViewModel.getSuccessMessage().observe(getViewLifecycleOwner(), msg -> {
             if (msg != null && !msg.isEmpty())
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
         });
     }
 
@@ -67,6 +69,6 @@ public class ForgotPasswordFragment extends Fragment {
         if (username.isEmpty()) { etUsername.setError("Required"); return; }
         if (email.isEmpty())    { etEmail.setError("Required");    return; }
 
-        viewModel.forgotPassword(username, email);
+        authViewModel.forgotPassword(username, email);
     }
 }

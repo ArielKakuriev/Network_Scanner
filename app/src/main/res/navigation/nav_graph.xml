@@ -15,24 +15,26 @@
         android:id="@+id/historyFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.HistoryFragment"
         android:label="History">
-        <!-- Action used in HistoryFragment to open a scan's device list -->
         <action
             android:id="@+id/action_historyFragment_to_scanDevicesFragment"
             app:destination="@id/scanDevicesFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.MainFragment"
         android:label="Main">
-        <!-- Action used in MainFragment when a device row is tapped -->
         <action
             android:id="@+id/action_mainFragment_to_deviceDetailFragment"
             app:destination="@id/deviceDetailFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -62,14 +64,15 @@
         android:id="@+id/scanDevicesFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.ScanDevicesFragment"
         android:label="Scan Devices">
-        <argument android:name="scanId"   android:defaultValue="-1" />
+        <argument android:name="scanId"   app:argType="long" android:defaultValue="-1L" />
         <argument android:name="scanName" android:defaultValue="" />
-        <!-- Action used in ScanDevicesFragment when a device row is tapped -->
         <action
             android:id="@+id/action_scanDevicesFragment_to_deviceDetailFragment"
             app:destination="@id/deviceDetailFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 </navigation>

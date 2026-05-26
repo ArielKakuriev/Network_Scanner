@@ -49,8 +49,14 @@ public class AboutMeFragment extends Fragment {
 
     private void bindInfo(NetworkInfo info) {
         if (info == null) return;
-        tvConnectedSsid.setText(info.getSsid() != null ? info.getSsid() : "Not connected");
-        tvDeviceIp.setText(info.getDeviceIp() != null ? info.getDeviceIp() : "—");
-        tvRouterIp.setText(info.getGatewayIp() != null ? info.getGatewayIp() : "—");
+
+        String ssid = info.getSsid(), deviceIp = info.getDeviceIp(), gwIp = info.getGatewayIp();
+
+        boolean validSsid = ssid != null && !ssid.isEmpty() && !ssid.equals("<unknown ssid>");
+        tvConnectedSsid.setText(validSsid ? ssid : "<unknown ssid> - Please enable GPS");
+
+        tvDeviceIp.setText(deviceIp != null ? deviceIp : "—");
+
+        tvRouterIp.setText(gwIp != null ? gwIp : "—");
     }
 }

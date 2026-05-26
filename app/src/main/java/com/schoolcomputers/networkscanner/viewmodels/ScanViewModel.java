@@ -116,9 +116,11 @@ public class ScanViewModel extends AndroidViewModel {
             networkInfo.postValue(info);
 
             String ssid  = info.getSsid() != null ? info.getSsid() : "Unknown";
+            // Temporary label — will be overwritten by renameScan() once the
+            // post-scan dialog is answered. Using <unknown> as fallback instead
+            // of the SSID so Skip produces "<unknown> dd/MM/yyyy HH:mm".
             String label = (networkName != null && !networkName.isEmpty())
-                    ? networkName : ssid + " " + android.text.format.DateFormat
-                            .format("dd/MM/yyyy HH:mm", System.currentTimeMillis());
+                    ? networkName : "<unknown>";
 
             // Scope the new scan record to the current user
             ScanRecord record = new ScanRecord(uid, label, ssid, System.currentTimeMillis(), 0);
@@ -193,6 +195,32 @@ public class ScanViewModel extends AndroidViewModel {
         scanner.cancel();
         scanState.setValue(ScanState.IDLE);
     }
+
+    /**
+     * Updates the label of the most recently completed scan.
+     * Called after the user types a name (or skips) in the post-scan dialog.
+     *
+     * @param name  user-supplied name, or null/empty to use the default fallback
+     */
+    public void renameScan(String name) {
+        if (currentScanId < 0) return;
+        long idToRename = currentScanId;
+        ioExecutor.execute(() -> {
+            try {
+                ScanRecord sr = scanDao.getScanById(idToRename);
+                if (sr == null) return;
+                if (name != null && !name.trim().isEmpty()) {
+                    sr.networkName = name.trim();
+                } else {
+                    sr.networkName = "<unknown>";
+                }
+                scanDao.updateScan(sr);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to rename scan", e);
+            }
+        });
+    }
+
 
     // ---- History actions ----
 

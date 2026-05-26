@@ -72,10 +72,10 @@ public class MyNetworkFragment extends Fragment {
 
     private void bindNetworkInfo(NetworkInfo info) {
         if (info == null) return;
-        String ssid = info.getSsid();
+        String ssid = info.getSsid(), gwIp = info.getGatewayIp();
         boolean validSsid = ssid != null && !ssid.isEmpty() && !ssid.equals("<unknown ssid>");
         tvSsid.setText(validSsid ? ssid : "<unknown ssid> - Please enable GPS");
-        tvRouterIp.setText(info.getGatewayIp() != null ? info.getGatewayIp() : "—");
+        tvRouterIp.setText(gwIp != null ? gwIp : "—");
         tvLinkSpeed.setText(info.getLinkSpeedMbps() + " Mbps");
         tvSignal.setText(signalLabel(info.getSignalLevel()));
     }

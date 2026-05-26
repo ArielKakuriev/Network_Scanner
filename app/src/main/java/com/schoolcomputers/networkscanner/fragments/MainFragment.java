@@ -145,12 +145,17 @@ public class MainFragment extends Fragment {
             .setPositiveButton("Save", (d, w) -> {
                 String name = etName.getText().toString().trim();
                 viewModel.renameScan(name);
+                viewModel.resetStateAfterNaming();
                 if (!name.isEmpty()) {
                     Toast.makeText(requireContext(), "Saved as \"" + name + "\"",
                             Toast.LENGTH_SHORT).show();
                 }
             })
-            .setNegativeButton("Skip", (d, w) -> viewModel.renameScan(null))
+            .setNegativeButton("Skip", (d, w) -> {
+                viewModel.renameScan(null);
+                viewModel.resetStateAfterNaming();
+            })
+            .setOnDismissListener(d -> viewModel.resetStateAfterNaming())
             .show();
     }
 

@@ -196,6 +196,13 @@ public class ScanViewModel extends AndroidViewModel {
         scanState.setValue(ScanState.IDLE);
     }
 
+    /** Call once the post-scan name dialog has been handled, so the DONE
+     *  state is cleared and won't re-trigger if the user navigates away
+     *  and comes back to this screen. */
+    public void resetStateAfterNaming() {
+        scanState.setValue(ScanState.IDLE);
+    }
+
     /**
      * Updates the label of the most recently completed scan.
      * Called after the user types a name (or skips) in the post-scan dialog.

@@ -23,8 +23,7 @@ import com.schoolcomputers.networkscanner.viewmodels.ScanViewModel;
 public class AboutMeFragment extends Fragment {
 
     private ScanViewModel viewModel;
-    private TextView tvConnectedSsid, tvDeviceIp, tvDeviceMac,
-                     tvRouterIp, tvRouterMac;
+    private TextView tvConnectedSsid, tvDeviceIp, tvRouterIp;
 
     @Nullable
     @Override
@@ -42,9 +41,7 @@ public class AboutMeFragment extends Fragment {
 
         tvConnectedSsid = view.findViewById(R.id.tvConnectedSsid);
         tvDeviceIp      = view.findViewById(R.id.tvDeviceIp);
-        tvDeviceMac     = view.findViewById(R.id.tvDeviceMac);
         tvRouterIp      = view.findViewById(R.id.tvRouterIp);
-        tvRouterMac     = view.findViewById(R.id.tvRouterMac);
 
         viewModel.getNetworkInfo().observe(getViewLifecycleOwner(), this::bindInfo);
         viewModel.refreshNetworkInfo();
@@ -54,8 +51,6 @@ public class AboutMeFragment extends Fragment {
         if (info == null) return;
         tvConnectedSsid.setText(info.getSsid() != null ? info.getSsid() : "Not connected");
         tvDeviceIp.setText(info.getDeviceIp() != null ? info.getDeviceIp() : "—");
-        tvDeviceMac.setText(info.getDeviceMac() != null ? info.getDeviceMac() : "—");
         tvRouterIp.setText(info.getGatewayIp() != null ? info.getGatewayIp() : "—");
-        tvRouterMac.setText(info.getGatewayMac() != null ? info.getGatewayMac() : "—");
     }
 }

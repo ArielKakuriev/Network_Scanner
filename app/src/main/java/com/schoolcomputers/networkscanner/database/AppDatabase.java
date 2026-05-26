@@ -11,13 +11,13 @@ import com.schoolcomputers.networkscanner.models.ScanRecord;
 
 /**
  * Room (SQLite) database for scan data only.
- *
+
  * User accounts are handled by Firebase Auth + Firestore — NOT stored here.
  * This database only contains ScanRecord and Device tables.
  */
 @Database(
     entities = {ScanRecord.class, Device.class},
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {

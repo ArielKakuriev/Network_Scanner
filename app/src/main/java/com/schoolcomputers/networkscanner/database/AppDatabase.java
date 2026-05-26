@@ -15,6 +15,9 @@ import com.schoolcomputers.networkscanner.models.ScanRecord;
  * User accounts are handled by Firebase Auth + Firestore — NOT stored here.
  * This database only contains ScanRecord and Device tables.
  */
+
+/** // Firebase: Reference firebase // **/
+/** // Room (SQLite): DB definition // **/
 @Database(
     entities = {ScanRecord.class, Device.class},
     version = 2,

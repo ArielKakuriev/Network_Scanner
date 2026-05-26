@@ -29,6 +29,9 @@ import java.util.concurrent.Executors;
  * All DB operations are scoped to the currently signed-in Firebase user,
  * so each user sees only their own scan history.
  */
+
+/** // Firebase: Read current firebase user // **/
+/** // Room (SQLite): Main read and write scans and devices // **/
 public class ScanViewModel extends AndroidViewModel {
 
     private static final String TAG = "ScanViewModel";

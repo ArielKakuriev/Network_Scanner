@@ -20,6 +20,9 @@ import java.util.List;
  * All scan queries are scoped to a specific userId so that
  * users never see each other's scan history.
  */
+
+/** // This interface is a DAO with advanced queries // **/
+/** // Room (SQLite): All queries // **/
 @Dao
 public interface ScanDao {
 

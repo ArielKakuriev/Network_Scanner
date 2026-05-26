@@ -24,6 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
  * Progress and result callbacks are delivered on the main thread via {@link Handler}.
  */
+
+/** // This class uses Thread / Handler // **/
 public class NetworkScanner {
 
     private static final String TAG = "NetworkScanner";
@@ -31,6 +33,8 @@ public class NetworkScanner {
     private static final int TIMEOUT_MS  = 400;    // per-host timeout
 
     /** Listener interface for scan lifecycle events. */
+
+    /** // This interface is triggering and listening to events (Invoke) // **/
     public interface ScanListener {
         void onScanProgress(int scanned, int total, Device foundDevice);
         void onScanComplete(List<Device> devices);
@@ -50,6 +54,7 @@ public class NetworkScanner {
      * @param scanId     Room ScanRecord ID (assigned before calling this method)
      * @param listener   progress / completion callbacks
      */
+    // Function ping to 254 hosts
     public void startScan(String baseIp, String routerIp, String routerMac,
                           long scanId, ScanListener listener) {
 

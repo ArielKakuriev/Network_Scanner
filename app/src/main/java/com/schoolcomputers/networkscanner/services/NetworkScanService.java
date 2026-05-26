@@ -31,6 +31,10 @@ import java.util.List;
  *   intent.putExtra("networkName", "My Home");
  *   context.startService(intent);
  */
+
+/** // This class is an important service class  // **/
+/** // Firebase: Read current firebase user // **/
+/** // Room (SQLite): Insert scan and devices // **/
 public class NetworkScanService extends Service {
 
     private static final String TAG = "NetworkScanService";

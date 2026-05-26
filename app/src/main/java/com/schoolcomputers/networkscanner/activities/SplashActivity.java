@@ -17,6 +17,8 @@ import com.schoolcomputers.networkscanner.R;
  * Splash screen.
  * Checks Firebase Auth for an existing session — no SQLite involved.
  */
+
+/** // Firebase: Check if user is logged in // **/
 public class SplashActivity extends AppCompatActivity {
 
     private static final long SPLASH_DURATION_MS = 1800;

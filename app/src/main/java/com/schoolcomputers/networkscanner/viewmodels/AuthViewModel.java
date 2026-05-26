@@ -24,6 +24,8 @@ import java.util.Map;
  * ViewModel for all auth screens.
  * Uses Firebase Authentication + Firestore. No SQLite/Room involved here.
  */
+
+/** // Firebase: Main firestore read/write for login, register, user profiles // **/
 public class AuthViewModel extends AndroidViewModel {
 
     private static final String TAG = "AuthViewModel";

@@ -33,7 +33,11 @@ import java.util.concurrent.TimeUnit;
  *       PeriodicScanWorker.class, 15, TimeUnit.MINUTES).build();
  *   WorkManager.getInstance(context).enqueueUniquePeriodicWork(
  *       "periodic_scan", ExistingPeriodicWorkPolicy.KEEP, req);
- */
+ **/
+
+/** // This class implements Work Manager // **/
+/** // Firebase: Read current firebase user // **/
+/** // Room (SQLite): Read and write during background scan // **/
 public class PeriodicScanWorker extends Worker {
 
     private static final String TAG = "PeriodicScanWorker";

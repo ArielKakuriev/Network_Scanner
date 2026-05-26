@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey;
  * Has a 1-to-many relationship with {@link Device}.
  * Scoped to a Firebase user via {@link #userId}.
  */
+
+/** // Firebase: Store UID field // **/
 @Entity(
     tableName = "scan_records",
     indices = { @Index("userId") }

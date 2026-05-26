@@ -11,6 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
  * Application class — runs once when the app process starts.
  * Initializes Firebase and configures Firestore settings.
  */
+
+/** // Firebase: Init firebase and it's settings // **/
 public class NetworkScannerApp extends Application {
 
     private static final String TAG = "NetworkScannerApp";

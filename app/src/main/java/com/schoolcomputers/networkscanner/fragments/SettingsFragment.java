@@ -25,6 +25,8 @@ import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
 /**
  * Settings tab — account info and app preferences.
  */
+
+/** // Firebase: Read user info, logout // **/
 public class SettingsFragment extends Fragment {
 
     private AuthViewModel authViewModel;

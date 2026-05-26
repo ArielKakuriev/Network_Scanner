@@ -17,6 +17,9 @@ import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
  * Hosts Login / Register / Forgot-Password tabs in a ViewPager2.
  * Observes FirebaseUser (not an integer userId) from AuthViewModel.
  */
+
+/** // This class uses ViewPager + Fragment // **/
+/** // Firebase: Auth flow // **/
 public class AuthActivity extends AppCompatActivity {
 
     private AuthViewModel authViewModel;

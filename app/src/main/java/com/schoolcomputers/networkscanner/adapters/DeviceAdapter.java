@@ -23,6 +23,8 @@ import java.util.List;
 
  * Exposes a click listener callback for device detail navigation.
  */
+
+/** // This class use ObservableCollection + RecyclerView // **/
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
     /** Functional interface for row click events. */

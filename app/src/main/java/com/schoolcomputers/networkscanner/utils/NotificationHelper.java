@@ -18,16 +18,18 @@ import com.schoolcomputers.networkscanner.activities.MainActivity;
 /**
  * Centralizes all notification creation for the app.
  * Creates channels on first use (Android 8+).
- *
+
  * Respects the "notifications_enabled" SharedPreference:
  *   - true  → show scan-complete notification WITH sound
  *   - false → suppress all non-foreground notifications
- *
+
  * NOTE: CHANNEL_SCAN was renamed from "channel_scan" to "channel_scan_v2"
  * because Android does not allow changing the importance of an already-created
  * channel. The old silent channel (IMPORTANCE_LOW) is deleted on upgrade and
  * the new one (IMPORTANCE_DEFAULT + sound) is created in its place.
  */
+
+/** // This class uses Notification // **/
 public class NotificationHelper {
 
     // Old silent channel – kept only so we can delete it on upgrade

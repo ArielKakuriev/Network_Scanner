@@ -22,6 +22,8 @@ import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
  * User enters username + email → Firebase sends a reset email.
  * Single step (no local password reset needed — Firebase handles it).
  */
+
+/** // Firebase: Auth password reset // **/
 public class ForgotPasswordFragment extends Fragment {
 
     private AuthViewModel authViewModel;

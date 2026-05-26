@@ -86,25 +86,22 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
     // ---- ViewHolder ----
 
     static class DeviceViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvIp, tvMac, tvHostname;
+        private final TextView tvIp, tvHostname;
 
         DeviceViewHolder(@NonNull View itemView) {
             super(itemView);
             tvIp       = itemView.findViewById(R.id.tvDeviceIp);
-            tvMac      = itemView.findViewById(R.id.tvDeviceMac);
             tvHostname = itemView.findViewById(R.id.tvDeviceHostname);
         }
 
         void bind(Device device, OnDeviceClickListener listener) {
             if (device == null) {
                 tvIp.setText("—");
-                tvMac.setText("Unknown MAC");
                 tvHostname.setText("—");
                 itemView.setOnClickListener(null);
                 return;
             }
             tvIp.setText(device.ipAddress != null ? device.ipAddress : "—");
-            tvMac.setText(device.macAddress != null ? device.macAddress : "Unknown MAC");
             tvHostname.setText(device.hostname != null ? device.hostname : device.ipAddress != null ? device.ipAddress : "—");
             itemView.setOnClickListener(v -> {
                 if (listener != null && device != null) {

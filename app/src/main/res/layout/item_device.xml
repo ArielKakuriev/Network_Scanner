@@ -70,26 +70,7 @@
                 android:textColor="@color/primary"
                 android:fontFamily="monospace" />
 
-            <TextView
-                android:id="@+id/tvDeviceMac"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="—"
-                android:textSize="12sp"
-                android:textColor="@color/text_secondary"
-                android:fontFamily="monospace" />
-
         </LinearLayout>
-
-        <!-- Chevron -->
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_chevron_right"
-            android:tint="@color/text_secondary"
-            android:contentDescription="details" />
-
-    </LinearLayout>
+        </LinearLayout>
 
 </androidx.cardview.widget.CardView>

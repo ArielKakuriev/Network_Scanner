@@ -12,6 +12,8 @@ import com.schoolcomputers.networkscanner.database.ScanDao;
 import com.schoolcomputers.networkscanner.models.Device;
 import com.schoolcomputers.networkscanner.models.NetworkInfo;
 import com.schoolcomputers.networkscanner.models.ScanRecord;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.schoolcomputers.networkscanner.utils.NetworkScanner;
 import com.schoolcomputers.networkscanner.utils.NetworkUtils;
 import com.schoolcomputers.networkscanner.utils.NotificationHelper;
@@ -71,37 +73,39 @@ public class NetworkScanService extends Service {
             String ssid  = info.getSsid() != null ? info.getSsid() : "Unknown";
             String label = networkName != null ? networkName : ssid;
 
-            ScanRecord record = new ScanRecord(label, ssid, System.currentTimeMillis(), 0);
+            FirebaseUser _user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = _user != null ? _user.getUid() : "";
+            ScanRecord record = new ScanRecord(uid, label, ssid, System.currentTimeMillis(), 0);
             long scanId = scanDao.insertScan(record);
 
             scanner.startScan(
-                info.getDeviceIp(),
-                info.getGatewayIp(),
-                info.getGatewayMac(),
-                scanId,
-                new NetworkScanner.ScanListener() {
-                    @Override
-                    public void onScanProgress(int scanned, int total, Device found) {
-                        scanDao.insertDevice(found);
-                    }
-
-                    @Override
-                    public void onScanComplete(List<Device> devices) {
-                        ScanRecord sr = scanDao.getScanById(scanId);
-                        if (sr != null) {
-                            sr.deviceCount = devices.size();
-                            scanDao.updateScan(sr);
+                    info.getDeviceIp(),
+                    info.getGatewayIp(),
+                    info.getGatewayMac(),
+                    scanId,
+                    new NetworkScanner.ScanListener() {
+                        @Override
+                        public void onScanProgress(int scanned, int total, Device found) {
+                            scanDao.insertDevice(found);
                         }
-                        notifHelper.showScanCompleteNotification(devices.size());
-                        stopSelf();
-                    }
 
-                    @Override
-                    public void onScanError(String message) {
-                        Log.e(TAG, "Scan error: " + message);
-                        stopSelf();
+                        @Override
+                        public void onScanComplete(List<Device> devices) {
+                            ScanRecord sr = scanDao.getScanById(scanId);
+                            if (sr != null) {
+                                sr.deviceCount = devices.size();
+                                scanDao.updateScan(sr);
+                            }
+                            notifHelper.showScanCompleteNotification(devices.size());
+                            stopSelf();
+                        }
+
+                        @Override
+                        public void onScanError(String message) {
+                            Log.e(TAG, "Scan error: " + message);
+                            stopSelf();
+                        }
                     }
-                }
             );
         }).start();
     }

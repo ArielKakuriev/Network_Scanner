@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,15 +16,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.auth.FirebaseAuth;
 import com.schoolcomputers.networkscanner.R;
 import com.schoolcomputers.networkscanner.activities.AuthActivity;
 import com.schoolcomputers.networkscanner.models.User;
 import com.schoolcomputers.networkscanner.viewmodels.AuthViewModel;
 
 /**
- * "Settings" tab.
- * Section 1: Account info (username, email, change password link).
- * Section 2: App preferences (notifications toggle, scan timeout).
+ * Settings tab — account info and app preferences.
  */
 public class SettingsFragment extends Fragment {
 
@@ -50,22 +47,28 @@ public class SettingsFragment extends Fragment {
         tvUsername = view.findViewById(R.id.tvSettingsUsername);
         tvEmail    = view.findViewById(R.id.tvSettingsEmail);
 
-        // Load user profile
         authViewModel.getUserProfile().observe(getViewLifecycleOwner(), this::bindProfile);
 
-        // Change password
         MaterialButton btnChangePassword = view.findViewById(R.id.btnChangePassword);
         btnChangePassword.setOnClickListener(v -> showChangePasswordDialog());
 
-        // Notifications toggle
         SwitchMaterial switchNotifications = view.findViewById(R.id.switchNotifications);
         switchNotifications.setChecked(loadNotificationPref());
         switchNotifications.setOnCheckedChangeListener((btn, checked) ->
                 saveNotificationPref(checked));
 
-        // Sign out
         MaterialButton btnSignOut = view.findViewById(R.id.btnSignOut);
         btnSignOut.setOnClickListener(v -> confirmSignOut());
+
+        authViewModel.getSuccessMessage().observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null && !msg.isEmpty())
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+        });
+
+        authViewModel.getErrorMessage().observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null && !msg.isEmpty())
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+        });
     }
 
     private void bindProfile(User user) {
@@ -75,46 +78,37 @@ public class SettingsFragment extends Fragment {
     }
 
     private void showChangePasswordDialog() {
-        View dialogView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.dialog_change_password, null);
-        EditText etEmail = dialogView.findViewById(R.id.etEmailForReset);
-
-        // Pre-fill email
-        User cachedUser = authViewModel.getUserProfile().getValue();
-        if (cachedUser != null) etEmail.setText(cachedUser.getEmail());
+        // Get the signed-in user's email directly from Firebase Auth — no Firestore needed.
+        String currentEmail = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : "";
 
         new AlertDialog.Builder(requireContext())
-            .setTitle("Reset Password")
-            .setMessage("We'll send a reset link to your email.")
-            .setView(dialogView)
-            .setPositiveButton("Send", (d, w) -> {
-                String email = etEmail.getText().toString().trim();
-                if (!email.isEmpty()) {
-                    // Reuse forgot-password flow: username will be validated server-side
-                    authViewModel.forgotPassword("", email);
-                    Toast.makeText(requireContext(),
-                            "Reset email sent to " + email, Toast.LENGTH_SHORT).show();
-                }
-            })
-            .setNegativeButton("Cancel", null)
-            .show();
+                .setTitle("Reset Password")
+                .setMessage("We will send a password reset link to:\n" + currentEmail)
+                .setPositiveButton("Send Reset Email", (d, w) -> {
+                    if (currentEmail != null && !currentEmail.isEmpty()) {
+                        // Pass empty username — AuthViewModel.forgotPassword handles this
+                        // by skipping the Firestore lookup and sending the email directly.
+                        authViewModel.forgotPassword("", currentEmail);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private void confirmSignOut() {
         new AlertDialog.Builder(requireContext())
-            .setTitle("Sign Out")
-            .setMessage("Are you sure you want to sign out?")
-            .setPositiveButton("Sign Out", (d, w) -> {
-                authViewModel.signOut();
-                Intent intent = new Intent(requireContext(), AuthActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            })
-            .setNegativeButton("Cancel", null)
-            .show();
+                .setTitle("Sign Out")
+                .setMessage("Are you sure you want to sign out?")
+                .setPositiveButton("Sign Out", (d, w) -> {
+                    authViewModel.signOut();
+                    Intent intent = new Intent(requireContext(), AuthActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
-
-    // ---- SharedPreferences helpers ----
 
     private boolean loadNotificationPref() {
         return requireContext()

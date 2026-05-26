@@ -53,20 +53,32 @@ public class ScanDevicesFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         DeviceAdapter adapter = new DeviceAdapter(new ArrayList<>(), device -> {
-            Bundle detailArgs = new Bundle();
-            detailArgs.putString("ip",        device.ipAddress);
-            detailArgs.putString("mac",       device.macAddress);
-            detailArgs.putString("hostname",  device.hostname);
-            detailArgs.putString("routerIp",  device.routerIp);
-            detailArgs.putString("routerMac", device.routerMac);
-            Navigation.findNavController(view)
-                      .navigate(R.id.action_scanDevicesFragment_to_deviceDetailFragment, detailArgs);
+            try {
+                if (device != null) {
+                    Bundle detailArgs = new Bundle();
+                    detailArgs.putString("ip",        device.ipAddress);
+                    detailArgs.putString("mac",       device.macAddress);
+                    detailArgs.putString("hostname",  device.hostname);
+                    detailArgs.putString("routerIp",  device.routerIp);
+                    detailArgs.putString("routerMac", device.routerMac);
+                    Navigation.findNavController(view)
+                              .navigate(R.id.action_scanDevicesFragment_to_deviceDetailFragment, detailArgs);
+                }
+            } catch (Exception e) {
+                android.util.Log.e("ScanDevicesFragment", "Error navigating to device detail", e);
+            }
         });
         rv.setAdapter(adapter);
 
         if (scanId >= 0) {
             viewModel.getDevicesForScan(scanId).observe(getViewLifecycleOwner(),
-                    devices -> adapter.updateDevices(devices != null ? devices : new ArrayList<>()));
+                    devices -> {
+                        if (devices != null) {
+                            adapter.updateDevices(devices);
+                        } else {
+                            adapter.updateDevices(new ArrayList<>());
+                        }
+                    });
         }
     }
 }

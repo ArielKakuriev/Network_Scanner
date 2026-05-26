@@ -89,46 +89,6 @@
                                 style="@style/ValueText" />
                         </LinearLayout>
 
-                        <!-- Router MAC -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="16dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/label_router_mac"
-                                android:textSize="12sp"
-                                android:textColor="@color/text_secondary" />
-                            <TextView
-                                android:id="@+id/tvRouterMac"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="—"
-                                style="@style/ValueText" />
-                        </LinearLayout>
-
-                        <!-- Device count -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="16dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/label_devices"
-                                android:textSize="12sp"
-                                android:textColor="@color/text_secondary" />
-                            <TextView
-                                android:id="@+id/tvDeviceCount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="—"
-                                style="@style/ValueText" />
-                        </LinearLayout>
-
                         <!-- Link speed -->
                         <LinearLayout
                             android:layout_width="match_parent"

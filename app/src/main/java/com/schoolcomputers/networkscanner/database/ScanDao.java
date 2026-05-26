@@ -17,7 +17,8 @@ import java.util.List;
 
 /**
  * Room DAO for all scan-related persistence operations.
- * Uses complex queries including JOIN and GROUP BY as required.
+ * All scan queries are scoped to a specific userId so that
+ * users never see each other's scan history.
  */
 @Dao
 public interface ScanDao {
@@ -33,11 +34,11 @@ public interface ScanDao {
     @Delete
     void deleteScan(ScanRecord scan);
 
-    @Query("DELETE FROM scan_records")
-    void deleteAllScans();
+    @Query("DELETE FROM scan_records WHERE userId = :userId")
+    void deleteAllScansForUser(String userId);
 
-    @Query("SELECT * FROM scan_records ORDER BY scannedAt DESC")
-    LiveData<List<ScanRecord>> getAllScans();
+    @Query("SELECT * FROM scan_records WHERE userId = :userId ORDER BY scannedAt DESC")
+    LiveData<List<ScanRecord>> getAllScans(String userId);
 
     @Query("SELECT * FROM scan_records WHERE id = :id")
     ScanRecord getScanById(long id);
@@ -58,33 +59,29 @@ public interface ScanDao {
 
     // ---- Complex Relation query (JOIN / @Relation) ----
 
-    /**
-     * Returns each scan together with its full device list.
-     * Room resolves the @Relation using two queries internally (JOIN semantics).
-     */
     @Transaction
-    @Query("SELECT * FROM scan_records ORDER BY scannedAt DESC")
-    LiveData<List<ScanWithDevices>> getAllScansWithDevices();
+    @Query("SELECT * FROM scan_records WHERE userId = :userId ORDER BY scannedAt DESC")
+    LiveData<List<ScanWithDevices>> getAllScansWithDevices(String userId);
 
     @Transaction
     @Query("SELECT * FROM scan_records WHERE id = :scanId")
     LiveData<ScanWithDevices> getScanWithDevices(long scanId);
 
     /**
-     * GROUP BY query: returns how many devices were found per SSID across all scans.
-     * Satisfies the GROUP BY advanced query requirement.
+     * GROUP BY query: devices found per SSID for a specific user.
      */
     @Query("SELECT sr.ssid, COUNT(d.id) AS deviceCount " +
            "FROM scan_records sr " +
            "LEFT JOIN devices d ON d.scanId = sr.id " +
+           "WHERE sr.userId = :userId " +
            "GROUP BY sr.ssid " +
            "ORDER BY deviceCount DESC")
-    LiveData<List<SsidDeviceCount>> getDeviceCountPerSsid();
+    LiveData<List<SsidDeviceCount>> getDeviceCountPerSsid(String userId);
 
     // ---- Stats helper ----
 
-    @Query("SELECT COUNT(*) FROM scan_records")
-    int getTotalScanCount();
+    @Query("SELECT COUNT(*) FROM scan_records WHERE userId = :userId")
+    int getTotalScanCount(String userId);
 
     @Query("SELECT COUNT(*) FROM devices WHERE scanId = :scanId")
     int getDeviceCountForScan(long scanId);

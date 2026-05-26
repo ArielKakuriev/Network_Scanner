@@ -4,7 +4,8 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
 
-    <!-- Bottom nav destinations -->
+    <!-- ── Bottom nav destinations ─────────────────────────────────────── -->
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.SettingsFragment"
@@ -16,7 +17,11 @@
         android:label="History">
         <action
             android:id="@+id/action_historyFragment_to_scanDevicesFragment"
-            app:destination="@id/scanDevicesFragment" />
+            app:destination="@id/scanDevicesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -25,7 +30,11 @@
         android:label="Main">
         <action
             android:id="@+id/action_mainFragment_to_deviceDetailFragment"
-            app:destination="@id/deviceDetailFragment" />
+            app:destination="@id/deviceDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -38,7 +47,8 @@
         android:name="com.schoolcomputers.networkscanner.fragments.AboutMeFragment"
         android:label="About Me" />
 
-    <!-- Secondary destinations (not in bottom nav) -->
+    <!-- ── Secondary destinations (not in bottom nav) ───────────────────── -->
+
     <fragment
         android:id="@+id/deviceDetailFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.DeviceDetailFragment"
@@ -54,11 +64,15 @@
         android:id="@+id/scanDevicesFragment"
         android:name="com.schoolcomputers.networkscanner.fragments.ScanDevicesFragment"
         android:label="Scan Devices">
-        <argument android:name="scanId"   android:defaultValue="-1" />
+        <argument android:name="scanId"   app:argType="long" android:defaultValue="-1L" />
         <argument android:name="scanName" android:defaultValue="" />
         <action
             android:id="@+id/action_scanDevicesFragment_to_deviceDetailFragment"
-            app:destination="@id/deviceDetailFragment" />
+            app:destination="@id/deviceDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 </navigation>

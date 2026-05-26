@@ -30,8 +30,7 @@ import java.util.concurrent.Executors;
 public class MyNetworkFragment extends Fragment {
 
     private ScanViewModel viewModel;
-    private TextView tvSsid, tvDeviceCount, tvRouterIp, tvRouterMac,
-                     tvLinkSpeed, tvSignal, tvSpeedResult;
+    private TextView tvSsid, tvRouterIp, tvLinkSpeed, tvSignal, tvSpeedResult;
     private LinearProgressIndicator progressSpeed;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -50,9 +49,7 @@ public class MyNetworkFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ScanViewModel.class);
 
         tvSsid        = view.findViewById(R.id.tvSsid);
-        tvDeviceCount = view.findViewById(R.id.tvDeviceCount);
         tvRouterIp    = view.findViewById(R.id.tvRouterIp);
-        tvRouterMac   = view.findViewById(R.id.tvRouterMac);
         tvLinkSpeed   = view.findViewById(R.id.tvLinkSpeed);
         tvSignal      = view.findViewById(R.id.tvSignal);
         tvSpeedResult = view.findViewById(R.id.tvSpeedResult);
@@ -70,17 +67,15 @@ public class MyNetworkFragment extends Fragment {
         viewModel.getNetworkInfo().observe(getViewLifecycleOwner(), this::bindNetworkInfo);
         viewModel.refreshNetworkInfo();
 
-        // Device count from latest scan
-        viewModel.getLiveDevices().observe(getViewLifecycleOwner(), devices -> {
-            tvDeviceCount.setText(String.valueOf(devices != null ? devices.size() : 0));
-        });
+
     }
 
     private void bindNetworkInfo(NetworkInfo info) {
         if (info == null) return;
-        tvSsid.setText(info.getSsid() != null ? info.getSsid() : "—");
-        tvRouterIp.setText(info.getGatewayIp() != null ? info.getGatewayIp() : "—");
-        tvRouterMac.setText(info.getGatewayMac() != null ? info.getGatewayMac() : "—");
+        String ssid = info.getSsid(), gwIp = info.getGatewayIp();
+        boolean validSsid = ssid != null && !ssid.isEmpty() && !ssid.equals("<unknown ssid>");
+        tvSsid.setText(validSsid ? ssid : "<unknown ssid> - Please enable GPS");
+        tvRouterIp.setText(gwIp != null ? gwIp : "—");
         tvLinkSpeed.setText(info.getLinkSpeedMbps() + " Mbps");
         tvSignal.setText(signalLabel(info.getSignalLevel()));
     }
